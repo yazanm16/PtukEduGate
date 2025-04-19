@@ -1,5 +1,5 @@
 const{validationResult}=require('express-validator')
-const{studentCreate,studentList}=require('../service/student.service')
+const{studentCreate,studentList,getStudentProfile,deleteStudent}=require('../service/student.service')
 
 
 const studentCreateByPost=async (req, res) => {
@@ -29,9 +29,56 @@ const studentListByGet=async (req, res) => {
 
 }
 
+const getStudentProfileByPost=async (req, res) => {
+    try{
+        const studentId=req.user.id;
+        const result=await getStudentProfile(studentId);
+        if (!result){
+            res.status(404).json({
+                success:false,
+                message:"Student not found"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            data:result
+        })
+    }catch(err){
+        console.log(err);
+        res.status(500).json({
+            success:false,
+            message:"There was an error while getting student"
+        })
+    }
+}
+
+const deleteStudentByDelete=async (req, res) => {
+    try{
+        const {id}=req.params;
+        const result=await deleteStudent(id);
+        if (!result){
+            res.status(404).json({
+                success:false,
+                message:"Student not found"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            message:"Student deleted successfully"
+        })
+    }catch(err){
+        console.log(err);
+        res.status(500).json({
+            success:false,
+            message:"There was an error while deleting student"
+        })
+    }
+}
 
 
 module.exports= {
     studentCreateByPost,
-    studentListByGet
+    studentListByGet,
+    getStudentProfileByPost,
+    deleteStudentByDelete
 };

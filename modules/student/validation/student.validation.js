@@ -4,7 +4,7 @@ const knexConfig = require('../../../knexfile');
 const router = require("../../../routes");
 const db = knex(knexConfig);
 
-const student_id=param('student_id ').isInt().withMessage('Student ID is must be valid')
+const student_id=param('student_id').isInt().withMessage('Student ID is must be valid')
     .custom(async(val)=>{
     try {
         const s_id=await db('students').where('student_id',val).first();
@@ -61,9 +61,12 @@ const createStudentValidation=[
     student_password
 
 ]
-
+const deleteStudentValidation=[
+    student_id
+]
 
 module.exports={
-    createStudentValidation
+    createStudentValidation,
+    deleteStudentValidation
 }
 

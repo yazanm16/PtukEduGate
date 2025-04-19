@@ -1,26 +1,26 @@
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
-const bcrypt = require('bcryptjs');  // ← استورد bcrypt
+const bcrypt = require('bcryptjs');
 
 const studentCreate = async (
     student_name,
     student_username,
     student_email,
-    student_password  // هذه كلمة المرور بالنص الصريح
+    student_password
 ) => {
     try {
-        // 1. أولاً: عمل Salt
+
         const salt = await bcrypt.genSalt(10);
-        // 2. ثم تشفير كلمة المرور
+
         const hashedPassword = await bcrypt.hash(student_password, salt);
 
-        // 3. تخزين الطالب مع كلمة المرور المشفرة
+
         await db('students').insert({
             student_name: student_name,
             student_username: student_username,
             student_email: student_email,
-            student_password: hashedPassword  // ← خزّن الـ hash بدل النص الصريح
+            student_password: hashedPassword
         });
 
         return "The student was added successfully";
@@ -37,8 +37,20 @@ const studentList=async ()=>{
         return "error";
     }
 }
+const getStudentProfile=async(studentId)=>{
+    const student=await db('students').select('student_id','student_name','student_username','student_email','date_of_register')
+        .where('student_id',studentId).first();
+
+    return student;
+}
+const deleteStudent=async(studentId)=>{
+    const deleted = await db('students').where('student_id',studentId).del();
+    return deleted;
+}
 
 module.exports = {
     studentCreate,
-    studentList
+    studentList,
+    getStudentProfile,
+    deleteStudent
 };
