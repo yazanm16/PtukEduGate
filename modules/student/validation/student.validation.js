@@ -21,31 +21,51 @@ const student_id=param('student_id').isInt().withMessage('Student ID is must be 
 
 const student_name=body('student_name').notEmpty().withMessage('Student name is required');
 
-const student_username=body('student_username').notEmpty().withMessage('Student username is required')
-    .custom(async(val)=>{
-        const user=await db('students').where('student_username',val).first();
-        if(user){
-            return Promise.reject('This name already exists');
-        }
-        else{
-            return Promise.resolve();
-        }
-    })
+const student_username = body('student_username')
+    .notEmpty().withMessage('Student username is required')
+    .custom(async (val, { req }) => {
+        const user = await db('students')
+            .where('student_username', val)
+            .andWhereNot('student_id', req.user.id)
+            .first();
 
-const student_email = body('student_email').notEmpty().withMessage('Student email is required').isEmail()
-    .custom(async(val)=>{
-        const email=val.toLowerCase();
-        const user=await db('students').where('student_email',email).first();
-        if(user){
+        if (user) {
+            return Promise.reject('This username already exists');
+        }
+
+        return true;
+    });
+
+
+const student_email = body('student_email')
+    .notEmpty().withMessage('Student email is required')
+    .isEmail().withMessage('Email is not valid')
+    .custom(async (val, { req }) => {
+        const email = val.toLowerCase();
+        const user = await db('students')
+            .where('student_email', email)
+            .andWhereNot('student_id', req.user.id)
+            .first();
+
+        if (user) {
             return Promise.reject('This email already exists');
         }
-        else{
-            return Promise.resolve();
-        }
-    })
+
+        return true;
+    });
+
 
 const student_password=body('student_password','Student passwords are required').notEmpty()
     .custom(async(val)=>{
+        if(val && val.length<6){
+            return Promise.reject('The password should be greater then 6 character');
+        }
+        else{
+            return Promise.resolve();
+        }
+    })
+const new_password=body('new_password','New passwords are required')
+    .custom(async (val, { req }) => {
         if(val && val.length<6){
             return Promise.reject('The password should be greater then 6 character');
         }
@@ -64,9 +84,26 @@ const createStudentValidation=[
 const deleteStudentValidation=[
     student_id
 ]
+const updateStudentValidation=[
+    student_name,
+    student_username,
+    student_email,
+    student_password
+]
+const changePasswordValidation=[
+    student_password,
+    new_password
+]
+
+const studentByIdValidation=[
+    student_id
+]
 
 module.exports={
     createStudentValidation,
-    deleteStudentValidation
+    deleteStudentValidation,
+    updateStudentValidation,
+    changePasswordValidation,
+    studentByIdValidation
 }
 

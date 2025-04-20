@@ -37,20 +37,37 @@ const studentList=async ()=>{
         return "error";
     }
 }
+
 const getStudentProfile=async(studentId)=>{
     const student=await db('students').select('student_id','student_name','student_username','student_email','date_of_register')
         .where('student_id',studentId).first();
 
     return student;
 }
+
 const deleteStudent=async(studentId)=>{
     const deleted = await db('students').where('student_id',studentId).del();
     return deleted;
 }
 
+const updateStudent=async(studentId,data)=>{
+    return await db('students').where('student_id',studentId).update(data);
+}
+
+const StudentById=async(id)=>{
+    try {
+        return await db('students').where('student_id',id).select('student_id','student_name','student_username','student_email','date_of_register').first()
+    }catch(err){
+        return "error";
+    }
+}
+
+
 module.exports = {
     studentCreate,
     studentList,
     getStudentProfile,
-    deleteStudent
+    deleteStudent,
+    updateStudent,
+    StudentById,
 };
