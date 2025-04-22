@@ -7,6 +7,7 @@ var cors=require('cors')
 
 const studentRouter=require('./modules/student/routes/student.router');
 const loginRouter =require('./modules/main/routes/auth.routes');
+const courseRouter=require('./modules/courses/routes/course.router');
 
 var app = express();
 app.use(cors());
@@ -23,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('',studentRouter);
 app.use('',loginRouter );
-
+app.use('',courseRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
