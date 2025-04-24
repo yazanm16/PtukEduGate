@@ -9,13 +9,40 @@ try{
         course_name:course_name,
         course_note:course_note,
     });
-    return "the course created successfully";
 
 }catch(err){
 console.log(err);
 return "failed to create course";
 }
 }
+
+const coursesList=async()=>{
+    try{
+        return await db('courses').select('course_id','course_name','course_note');
+
+    }
+    catch(err){
+        return "error";
+    }
+}
+
+
+const updateCourse=async(course_id,data)=>{
+    return await db('courses').where('course_id',course_id).update(data);
+}
+
+const deleteCourse=async(course_id)=>{
+    return await db('courses').where('course_id',course_id).delete();
+}
+
+const getCourse=async(course_id)=>{
+    return await db('courses').where('course_id',course_id).select('course_id','course_name','course_note').first();
+
+}
 module.exports={
-    createCourse
+    createCourse,
+    coursesList,
+    updateCourse,
+    deleteCourse,
+    getCourse
 }

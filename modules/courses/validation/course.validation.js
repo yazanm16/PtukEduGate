@@ -2,6 +2,7 @@ const{body,param}=require('express-validator')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const router = require("../../../routes");
+const {updateCourse} = require("../service/course.service");
 const db = knex(knexConfig);
 
 const course_id=param('course_id').isInt().withMessage('The course ID is required')
@@ -27,7 +28,21 @@ const course_note=body('course_note').optional().isString().withMessage('Course 
 const createCourseValidation=[
     course_name,course_note
 ]
+const updateCourseValidation=[
+    course_id,
+    course_name,
+    course_note
+]
+const deleteCourseValidation=[
+    course_id
+]
+const getCoursesValidation=[
+    course_id
+]
 
 module.exports={
-    createCourseValidation
+    createCourseValidation,
+    updateCourseValidation,
+    deleteCourseValidation,
+    getCoursesValidation
 }
