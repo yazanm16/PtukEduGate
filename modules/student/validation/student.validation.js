@@ -1,7 +1,6 @@
 const{body,param}=require('express-validator')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
-const router = require("../../../routes");
 const db = knex(knexConfig);
 
 const student_id=param('student_id').isInt().withMessage('Student ID is must be valid')
