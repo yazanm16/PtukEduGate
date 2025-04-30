@@ -23,11 +23,11 @@ const student_name=body('student_name').notEmpty().withMessage('Student name is 
 const student_username = body('student_username')
     .notEmpty().withMessage('Student username is required')
     .custom(async (val, { req }) => {
-        const user = await db('students')
-            .where('student_username', val)
-            .andWhereNot('student_id', req.user.id)
-            .first();
-
+        let query=db('students').where('student_username',val)
+        if (req.user && req.user.id) {
+            query = query.andWhereNot('student_id', req.user.id);
+        }
+        const user = await query.first();
         if (user) {
             return Promise.reject('This username already exists');
         }
@@ -41,17 +41,16 @@ const student_email = body('student_email')
     .isEmail().withMessage('Email is not valid')
     .custom(async (val, { req }) => {
         const email = val.toLowerCase();
-        const user = await db('students')
-            .where('student_email', email)
-            .andWhereNot('student_id', req.user.id)
-            .first();
-
+        let query = db('students').where('student_email', email);
+        if (req.user && req.user.id) {
+            query = query.andWhereNot('student_id', req.user.id);
+        }
+        const user = await query.first();
         if (user) {
             return Promise.reject('This email already exists');
         }
-
         return true;
-    });
+    })
 
 
 const student_password=body('student_password','Student passwords are required').notEmpty()

@@ -12,11 +12,28 @@ const password = body('password', 'Password is required')
         return Promise.resolve();
     });
 
+const email=body('email').notEmpty().withMessage('Email is required')
+    .isEmail().withMessage('Invalid email format')
+
+const token = body('token').notEmpty().withMessage('Token is required')
+
+const new_password=body('new_password').notEmpty().withMessage('New Password is required')
+    .isLength({min:6}).withMessage('Password must be at least 6 characters')
+
 const loginValidation = [
     emailOrUsername,
     password
 ];
 
+const forgotPasswordValidation=[
+    email
+]
+
+const resetPasswordValidation=[
+    token,new_password
+]
 module.exports = {
-    loginValidation
+    loginValidation,
+    forgotPasswordValidation,
+    resetPasswordValidation
 };
