@@ -3,7 +3,7 @@ const knexConfig=require('../../../knexfile');
 const db=knex(knexConfig);
 const bcrypt = require("bcryptjs");
 const jwt=require('jsonwebtoken');
-const {studentCreate} = require("../../student/service/student.service");
+const {sendResetEmail} = require("../utils/sendResetEmail");
 
 const login=async (emailOrUsername, password)=>{
     let user;
@@ -55,7 +55,7 @@ const login=async (emailOrUsername, password)=>{
         role:role
 
     },process.env.JWT_SECRET,
-        {expiresIn: '1h'}
+        {expiresIn: '6h'}
     );
     return{
         token,
@@ -68,6 +68,63 @@ const login=async (emailOrUsername, password)=>{
         }
     };
 };
+
+const forgotPassword=async (email)=>{
+    let user;
+    let role;
+    user=await db('students').where({student_email:email}).first();
+    if(user){
+        const admin=await db('admins').where('student_id',user.student_id).first();
+        if(admin){
+            role=user.role;
+        }else{
+            role='student';
+        }
+    }else{
+        throw new Error('User Not Found');
+    }
+
+    const token=jwt.sign({
+        id:user.student_id,
+        role:role
+    },process.env.JWT_SECRET,
+        {expiresIn: '15m'}
+    );
+    await sendResetEmail(email, token);
+    return "Reset password link sent to your email";
+}
+
+const resetPassword=async (token,newPassword)=>{
+    try{
+        const decodedToken=jwt.verify(token,process.env.JWT_SECRET);
+        const{id,role}=decodedToken;
+        const hashedPassword=await bcrypt.hash(newPassword,10);
+        if (role ==='student'){
+            await db('students').where({student_id:id}).update({student_password:hashedPassword});
+        }
+        else if(role === 'admin' || role === 'superadmin'){
+            const admin=await db('admins').where({admin_id:id}).first();
+            if(!admin){
+                throw new Error('Admin Not Found');
+            }
+            await Promise.all([
+                db ('admins')
+                    .where({admin_id:id}).update({admin_password:hashedPassword}),
+
+                db ('students')
+                    .where({student_id:admin.student_id}).update({student_password:hashedPassword}),
+
+            ])
+        }
+        else{
+            throw new Error('Invalid Role');
+        }
+        return "Password reset successfully";
+    }catch(err){
+        throw "Invalid or expired token";
+    }
+}
+
 module.exports={
-    login
+    login,forgotPassword,resetPassword
 };
