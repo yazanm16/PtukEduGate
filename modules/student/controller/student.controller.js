@@ -81,7 +81,7 @@ const deleteStudentByDelete=async (req, res) => {
 const updateStudentByPut=async (req, res) => {
     try {
         const studentId=req.user.id;
-        let {student_name,student_username,student_email,student_password}=req.body;
+        let {student_name,student_username,student_email}=req.body;
         const updateDate={}
         if(student_name){
             updateDate.student_name=student_name;
@@ -91,11 +91,6 @@ const updateStudentByPut=async (req, res) => {
         }
         if(student_email){
             updateDate.student_email=student_email;
-        }
-        if(student_password){
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword=await bcrypt.hash(student_password,salt);
-            updateDate.student_password=hashedPassword;
         }
         if(Object.keys(updateDate).length===0){
             return res.status(404).json({

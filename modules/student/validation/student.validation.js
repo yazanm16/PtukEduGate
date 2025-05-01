@@ -86,7 +86,6 @@ const updateStudentValidation=[
     student_name,
     student_username,
     student_email,
-    student_password
 ]
 const changePasswordValidation=[
     student_password,

@@ -8,7 +8,7 @@ const authorizeRoles=require('../../main/middelware/authorizeRoles.middleware')
 
 router.post('/signup',createStudentValidation,studentCreateByPost);
 router.get('/admin/all-student',Authenticated,authorizeRoles('superadmin'),studentListByGet);
-router.get('/profile',Authenticated,authorizeRoles('student'),getStudentProfileByGet);
+router.get('/profile',Authenticated,authorizeRoles('student','admin','superadmin'),getStudentProfileByGet);
 router.delete('/admin/delete-student/:id',Authenticated,authorizeRoles('superadmin'),deleteStudentValidation,deleteStudentByDelete);
 router.put('/student/update',Authenticated,authorizeRoles('student'),updateStudentValidation,updateStudentByPut);
 router.put('/student/change-password',Authenticated,authorizeRoles('student'),changePasswordValidation,updatePasswordByPut);
