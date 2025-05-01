@@ -42,8 +42,26 @@ const deleteAdmin=async (id)=>{
     return "Admin removed successfully.";
 }
 
+const updateAdmin=async(admin_id,data)=>{
+    const admin= await db('admins').where({admin_id:admin_id}).first();
+    const studentId=admin.student_id;
+    await db('admins').where({admin_id:admin_id}).update(data);
+    const student=await db('students').where({student_id:studentId}).first();
+    if(student){
+        const studentUpdate = {};
+        if (data.admin_name) studentUpdate.student_name = data.admin_name;
+        if (data.admin_username) studentUpdate.student_username = data.admin_username;
+        if (data.admin_email) studentUpdate.student_email = data.admin_email;
+        if (Object.keys(studentUpdate).length > 0) {
+            await db('students').where({ student_id: studentId }).update(studentUpdate);
+        }
+    }
+    return true;
+}
+
 module.exports={
     createAdmin,
     adminList,
-    deleteAdmin
+    deleteAdmin,
+    updateAdmin
 };

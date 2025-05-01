@@ -1,6 +1,6 @@
 const{validationResult}=require('express-validator')
 const bcrypt = require('bcryptjs');
-const{createAdmin,adminList,deleteAdmin}=require('../service/admin.service')
+const{createAdmin,adminList,deleteAdmin,updateAdmin}=require('../service/admin.service')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
@@ -54,6 +54,46 @@ const deleteAdminByDelete=async(req,res)=>{
         })
     }
 
+}
+
+const updateAdminByPut=async(req,res)=>{
+    try {
+        const adminId=req.user.id;
+        let{admin_name,admin_username,admin_email}=req.body;
+        const updateData={}
+        if(admin_name){
+            updateData.admin_name=admin_name;
+        }
+        if(admin_username){
+            updateData.admin_username=admin_username;
+        }
+        if(admin_email){
+            updateData.admin_email=admin_email;
+        }
+        if(Object.keys(updateData).length===0){
+            return res.status(404).json({
+                success:false,
+                message:"No Data Found"
+            })
+        }
+        const result=await updateAdmin(adminId,updateData);
+        if(!result){
+            res.status(404).json({
+                success:false,
+                message:"Admin not found or no changes made"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            message:"Successfully updated Admin"
+        })
+    }catch(err){
+        console.error(err);
+        res.status(500).json({
+            success:false,
+            message:"Error updating Admin"
+        })
+    }
 }
 module.exports = {
     createAdminByPost,

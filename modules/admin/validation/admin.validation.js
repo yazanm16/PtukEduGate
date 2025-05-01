@@ -94,6 +94,9 @@ const deleteAdminValidation=[
     admin_id
 ]
 
+const updateAdminValidation=[
+    admin_name,admin_email,admin_username
+]
 module.exports={
     createAdminValidation,
     deleteAdminValidation
