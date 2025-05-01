@@ -82,23 +82,23 @@ const updateStudentByPut=async (req, res) => {
     try {
         const studentId=req.user.id;
         let {student_name,student_username,student_email}=req.body;
-        const updateDate={}
+        const updateData={}
         if(student_name){
-            updateDate.student_name=student_name;
+            updateData.student_name=student_name;
         }
         if(student_username){
-            updateDate.student_username=student_username;
+            updateData.student_username=student_username;
         }
         if(student_email){
-            updateDate.student_email=student_email;
+            updateData.student_email=student_email;
         }
-        if(Object.keys(updateDate).length===0){
+        if(Object.keys(updateData).length===0){
             return res.status(404).json({
                 success:false,
                 message:"No Data Found"
             })
         }
-        const result= await updateStudent(studentId,updateDate);
+        const result= await updateStudent(studentId,updateData);
         if(!result){
             res.status(404).json({
                 success:false,
