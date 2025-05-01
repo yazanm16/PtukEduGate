@@ -26,8 +26,24 @@ const createAdmin=async(student_id,department_id,role='admin')=>{
  return "Admin added successfully.";
 }
 
+const adminList=async(req,res)=>{
+    try {
+        return await db('admins').select('admin_id','admin_name','admin_username','admin_email','date_of_register','department_id','student_id','role')
+    }catch(err){
+        return "error";
+    }
+}
 
+const deleteAdmin=async (id)=>{
+    const deleted=await db('admins').where({admin_id:id}).del();
+    if(deleted===0){
+        throw new Error('Admin not found');
+    }
+    return "Admin removed successfully.";
+}
 
 module.exports={
-    createAdmin
+    createAdmin,
+    adminList,
+    deleteAdmin
 };

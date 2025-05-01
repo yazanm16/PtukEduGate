@@ -90,7 +90,11 @@ const role=body('role').optional().isIn(['admin','superadmin']).withMessage('Rol
 const createAdminValidation=[
     student_id,department_id,role
 ]
+const deleteAdminValidation=[
+    admin_id
+]
 
 module.exports={
-    createAdminValidation
+    createAdminValidation,
+    deleteAdminValidation
 }
