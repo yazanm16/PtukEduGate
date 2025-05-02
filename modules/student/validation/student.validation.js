@@ -1,4 +1,4 @@
-const{body,param}=require('express-validator')
+const{body,param,query}=require('express-validator')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
@@ -96,11 +96,17 @@ const studentByIdValidation=[
     student_id
 ]
 
+const getStudentsValidation=[
+    query('id').optional().isInt().withMessage('ID must be an integer'),
+    query('student_name').optional().isString().trim(),
+    query('student_username').optional().isString().trim(),
+]
 module.exports={
     createStudentValidation,
     deleteStudentValidation,
     updateStudentValidation,
     changePasswordValidation,
-    studentByIdValidation
+    studentByIdValidation,
+    getStudentsValidation
 }
 

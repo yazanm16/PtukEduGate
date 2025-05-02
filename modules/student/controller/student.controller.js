@@ -18,12 +18,20 @@ return res.json(result);
 
 const studentListByGet=async (req, res) => {
     try {
-        const result=await studentList();
+        const filters=req.query;
+        const result=await studentList(filters);
+        if(!result){
+            res.status(404).json({
+                success:false,
+                message:'No student found'
+            })
+        }
         res.status(200).json({
             success:true,
             data:result
         });
     }catch(err){
+        console.log(err);
         res.status(500).json({
             success:false,
             message:"There was an error while getting student"
@@ -152,28 +160,7 @@ const updatePasswordByPut=async (req, res) => {
     }
 }
 
-const getStudentByIdByGet=async (req, res) => {
-    try{
-        const {id} = req.params;
-        const result=await StudentById(id)
-        if (!result){
-            res.status(404).json({
-                success:false,
-                message:"Student not found"
-            })
-        }
-        res.status(200).json({
-            success:true,
-            data:result
-        })
-    }catch(err){
-        console.log(err);
-        res.status(500).json({
-            success:false,
-            message:"There was an error while getting student"
-        })
-    }
-}
+
 
 module.exports= {
     studentCreateByPost,
@@ -182,5 +169,5 @@ module.exports= {
     deleteStudentByDelete,
     updateStudentByPut,
     updatePasswordByPut,
-    getStudentByIdByGet
+
 };

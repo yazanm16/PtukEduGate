@@ -30,12 +30,14 @@ const studentCreate = async (
     }
 };
 
-const studentList=async ()=>{
-    try {
-        return await db('students').select('student_id','student_name','student_username','student_email','date_of_register');
-    }catch(err){
-        return "error";
-    }
+const studentList=async (filters={})=>{
+    let query=db('students');
+    if(filters.id)query=query.where('student_id',filters.id);
+    if(filters.student_name)query=query.where('student_name','like', `%${filters.student_name}%`);
+    if(filters.student_username)query=query.where('student_username',filters.student_username);
+
+    return await query.select('*');
+
 }
 
 const getStudentProfile=async(studentId)=>{
@@ -54,13 +56,7 @@ const updateStudent=async(studentId,data)=>{
     return await db('students').where('student_id',studentId).update(data);
 }
 
-const StudentById=async(id)=>{
-    try {
-        return await db('students').where('student_id',id).select('student_id','student_name','student_username','student_email','date_of_register').first()
-    }catch(err){
-        return "error";
-    }
-}
+
 
 
 module.exports = {
@@ -69,5 +65,5 @@ module.exports = {
     getStudentProfile,
     deleteStudent,
     updateStudent,
-    StudentById,
+
 };
