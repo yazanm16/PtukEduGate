@@ -9,7 +9,7 @@ const{createAdminByPost, adminsListByGet,deleteAdminByDelete, updateAdminByPut}=
 
 router.post('/admins/create-from-student',Authenticated,authorizeRoles('superadmin'),createAdminValidation,createAdminByPost)
 
-router.get('/admins-list',Authenticated,authorizeRoles('superadmin'),getAdminsValidation,adminsListByGet)
+router.get('/admins-list-filters',Authenticated,authorizeRoles('superadmin'),getAdminsValidation,adminsListByGet)
 
 router.delete('/admins-delete/:id',Authenticated,authorizeRoles('superadmin'),deleteAdminValidation,deleteAdminByDelete)
 
