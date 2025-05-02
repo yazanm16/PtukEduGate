@@ -26,12 +26,16 @@ const createAdmin=async(student_id,department_id,role='admin')=>{
  return "Admin added successfully.";
 }
 
-const adminList=async(req,res)=>{
-    try {
-        return await db('admins').select('admin_id','admin_name','admin_username','admin_email','date_of_register','department_id','student_id','role')
-    }catch(err){
-        return "error";
-    }
+const adminList=async(filters={})=>{
+    let query=db('admins')
+
+    if(filters.id)query=query.where('admin_id',filters.id);
+    if(filters.admin_name) query = query.where('admin_name', 'like', `%${filters.admin_name}%`);
+    if(filters.admin_username)query=query.where('admin_username',filters.admin_username);
+    if(filters.department_id)query=query.where('department_id',filters.department_id);
+    if(filters.role)query=query.where('role',filters.role);
+
+    return await query.select('*');
 }
 
 const deleteAdmin=async (id)=>{

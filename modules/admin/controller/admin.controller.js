@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const{createAdmin,adminList,deleteAdmin,updateAdmin}=require('../service/admin.service')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
+const err = require("nodemailer/lib/mail-composer");
 const db = knex(knexConfig);
 
 const createAdminByPost=async(req,res)=>{
@@ -24,17 +25,24 @@ const createAdminByPost=async(req,res)=>{
 
 const adminsListByGet=async(req,res)=>{
     try {
-        const result=await adminList();
+        const filters=req.query;
+        const result=await adminList(filters);
+        if(!result){
+            res.status(404).json({
+                success:false,
+                message:"no admins found"
+            })
+        }
         res.status(200).json({
             success:true,
             data:result
         })
     }catch(err){
-        console.error(err);
-        res.status(500).json({
-            success:false,
-            message:"Error getting admins list"
-        })
+    console.error(err);
+    res.status(500).json({
+        success:false,
+        message:"Something went wrong"
+    })
     }
 }
 
@@ -98,5 +106,6 @@ const updateAdminByPut=async(req,res)=>{
 module.exports = {
     createAdminByPost,
     adminsListByGet,
-    deleteAdminByDelete
+    deleteAdminByDelete,
+    updateAdminByPut
 };

@@ -1,4 +1,4 @@
-const{body,param}=require('express-validator')
+const{body,param,query}=require('express-validator')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
@@ -97,7 +97,14 @@ const deleteAdminValidation=[
 const updateAdminValidation=[
     admin_name,admin_email,admin_username
 ]
+const getAdminsValidation=[
+    query('id').optional().isInt().withMessage('ID must be an integer'),
+    query('role').optional().isIn(['admin', 'superadmin']).withMessage('Role must be valid'),
+    query('admin_name').optional().isString().trim()
+]
 module.exports={
     createAdminValidation,
-    deleteAdminValidation
+    deleteAdminValidation,
+    updateAdminValidation,
+    getAdminsValidation
 }
