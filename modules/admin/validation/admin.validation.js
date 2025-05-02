@@ -100,7 +100,8 @@ const updateAdminValidation=[
 const getAdminsValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
     query('role').optional().isIn(['admin', 'superadmin']).withMessage('Role must be valid'),
-    query('admin_name').optional().isString().trim()
+    query('admin_name').optional().isString().trim(),
+    query('admin_username').optional().isString().trim()
 ]
 module.exports={
     createAdminValidation,
