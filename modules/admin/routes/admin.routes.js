@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Authenticated=require('../../main/middelware/auth.middelware')
 const authorizeRoles=require('../../main/middelware/authorizeRoles.middleware')
-const{createAdminValidation,deleteAdminValidation,updateAdminValidation,getAdminsValidation}=require('../validation/admin.validation');
-const{createAdminByPost, adminsListByGet,deleteAdminByDelete, updateAdminByPut}=require('../controller/admin.controller');
+const{createAdminValidation,deleteAdminValidation,updateAdminValidation,getAdminsValidation, changeAdminPasswordValidation}=require('../validation/admin.validation');
+const{createAdminByPost, adminsListByGet,deleteAdminByDelete, updateAdminByPut, getAdminProfileByGet, changeAdminPasswordByPut}=require('../controller/admin.controller');
 
 
 
@@ -14,4 +14,10 @@ router.get('/admins-list-filters',Authenticated,authorizeRoles('superadmin'),get
 router.delete('/admins-delete/:id',Authenticated,authorizeRoles('superadmin'),deleteAdminValidation,deleteAdminByDelete)
 
 router.put('/admin/update-profile',Authenticated,authorizeRoles('superadmin'),updateAdminValidation,updateAdminByPut)
+
+router.get('admin-profile',Authenticated,authorizeRoles('admin','superadmin'),getAdminProfileByGet)
+
+router.put('admin/change-password',Authenticated,authorizeRoles('admin','superadmin'),changeAdminPasswordValidation,changeAdminPasswordByPut)
+
+
 module.exports = router;

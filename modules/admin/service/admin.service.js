@@ -63,9 +63,33 @@ const updateAdmin=async(admin_id,data)=>{
     return true;
 }
 
+const adminProfile=async(admin_id)=>{
+    return await db('admins').where({admin_id:admin_id}).select('admin_id','admin_name','admin_username','admin_email','date_of_register','department_id','student_id','role');
+}
+
+const changeAdminPass=async(admin_id,old_password,new_password)=>{
+    const admin=await db('admins').where({admin_id:admin_id}).first();
+    if(!admin){
+        throw new Error('Admin not found');
+    }
+    const isMatch=await bcrypt.compare(old_password,admin.admin_password);
+    if(!isMatch){
+        throw new Error('old_password not match');
+    }
+    const newHashedPassword=await bcrypt.hash(new_password,10);
+    await db('admins').where({admin_id:admin_id}).update({admin_password:newHashedPassword});
+
+    const student=await db('students').where({student_id:admin.student_id}).first();
+    if(student){
+        await db('students').where({ student_id: admin.student_id }).update({student_password: newHashedPassword});
+    }
+    return 'Password changed successfully.';
+}
 module.exports={
     createAdmin,
     adminList,
     deleteAdmin,
-    updateAdmin
+    updateAdmin,
+    adminProfile,
+    changeAdminPass
 };

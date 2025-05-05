@@ -1,6 +1,6 @@
 const{validationResult}=require('express-validator')
 const bcrypt = require('bcryptjs');
-const{createAdmin,adminList,deleteAdmin,updateAdmin}=require('../service/admin.service')
+const{createAdmin,adminList,deleteAdmin,updateAdmin,adminProfile,changeAdminPass}=require('../service/admin.service')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const err = require("nodemailer/lib/mail-composer");
@@ -103,9 +103,51 @@ const updateAdminByPut=async(req,res)=>{
         })
     }
 }
+
+const getAdminProfileByGet=async(req,res)=>{
+    try {
+        const adminId=req.user.id;
+        const result=await adminProfile(adminId);
+        if(!result){
+            res.status(404).json({
+                success:false,
+                message:"No Data Found"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            data:result
+        })
+    }catch(err){
+        console.error(err);
+        res.status(500).json({
+            success:false,
+            message:"Something went wrong"
+        })
+    }
+}
+
+const changeAdminPasswordByPut=async(req,res)=>{
+    try{
+        const adminId=req.user.id;
+        const{admin_password,new_password}=req.body;
+        const result=await changeAdminPass(adminId,admin_password,new_password);
+        res.status(200).json({
+            success:true,
+            message:result
+        })
+    }catch (err) {
+        res.status(400).json({
+            success:false,
+            message:err.message
+        })
+    }
+}
 module.exports = {
     createAdminByPost,
     adminsListByGet,
     deleteAdminByDelete,
-    updateAdminByPut
+    updateAdminByPut,
+    getAdminProfileByGet,
+    changeAdminPasswordByPut
 };
