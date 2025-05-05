@@ -1,5 +1,5 @@
 const{validationResult}=require('express-validator')
-const{studentCreate,studentList,getStudentProfile,deleteStudent,updateStudent,StudentById}=require('../service/student.service')
+const{studentCreate,studentList,getStudentProfile,deleteStudent,updateStudent}=require('../service/student.service')
 const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
