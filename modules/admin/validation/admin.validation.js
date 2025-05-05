@@ -87,7 +87,6 @@ const department_id=body('department_id').notEmpty().withMessage('Department is 
 
 const role=body('role').optional().isIn(['admin','superadmin']).withMessage('Role must be admin or superadmin');
 
-const new_password=body('new_password').notEmpty().withMessage('New passwords are required').isLength({min:6}).withMessage('Passwords must be at least 6 characters');
 const createAdminValidation=[
     student_id,department_id,role
 ]
