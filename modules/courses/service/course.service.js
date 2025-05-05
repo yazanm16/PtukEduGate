@@ -16,14 +16,12 @@ return "failed to create course";
 }
 }
 
-const coursesList=async()=>{
-    try{
-        return await db('courses').select('course_id','course_name','course_note');
+const coursesList=async(filters={})=>{
+    let query=db('courses')
+    if(filters.id)query=query.where('course_id',filters.id);
+    if(filters.course_name)query=query.where('course_name',filters.course_name);
 
-    }
-    catch(err){
-        return "error";
-    }
+    return await query.select('*');
 }
 
 
@@ -35,14 +33,11 @@ const deleteCourse=async(course_id)=>{
     return await db('courses').where('course_id',course_id).delete();
 }
 
-const getCourse=async(course_id)=>{
-    return await db('courses').where('course_id',course_id).select('course_id','course_name','course_note').first();
 
-}
 module.exports={
     createCourse,
     coursesList,
     updateCourse,
     deleteCourse,
-    getCourse
+
 }

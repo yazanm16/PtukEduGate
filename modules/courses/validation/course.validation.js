@@ -1,4 +1,4 @@
-const{body,param}=require('express-validator')
+const{body,param, query}=require('express-validator')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const router = require("../../../routes");
@@ -37,7 +37,8 @@ const deleteCourseValidation=[
     course_id
 ]
 const getCoursesValidation=[
-    course_id
+    query('id').optional().isInt().withMessage('ID must be an integer'),
+    query('course_name').optional().isString().trim(),
 ]
 
 module.exports={

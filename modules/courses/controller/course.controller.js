@@ -1,5 +1,5 @@
 const{validationResult}=require('express-validator')
-const {createCourse,coursesList,updateCourse,deleteCourse,getCourse}=require('../service/course.service')
+const {createCourse,coursesList,updateCourse,deleteCourse}=require('../service/course.service')
 const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
@@ -26,10 +26,17 @@ const creteCourseByPost = async (req, res) => {
 
 const getCoursesByGet = async (req, res) => {
     try{
-        const result=await coursesList();
+        const filters=req.query;
+        const result=await coursesList(filters);
+        if (!result){
+            res.status(404).json({
+                success:false,
+                message:"No courses found."
+            })
+        }
         return res.status(200).json({
             success:true,
-            result:result
+            data:result
         })
     }catch(err){
         console.log(err);
@@ -98,32 +105,11 @@ const deleteCourseByDelete = async (req, res) => {
 
 }
 
-const getCourseById = async (req, res) => {
-    try{
-        const {id} = req.params;
-        const result=await getCourse(id);
-        if(result===0){
-            return res.status(404).json({
-                success:false,
-                message:"Course not found"
-            })
-        }
-        return res.status(200).json({
-            success:true,
-            data:result
-        })
-    }catch(err){
-        console.log(err);
-        res.status(500).json({
-            success:false,
-            message:"Something went wrong"
-        })
-    }
-}
+
 module.exports= {
     creteCourseByPost,
     getCoursesByGet,
     updateCourseByPut,
     deleteCourseByDelete,
-    getCourseById
+
 }
