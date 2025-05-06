@@ -9,6 +9,11 @@ const studentRouter=require('./modules/student/routes/student.router');
 const AuthenticationRouter =require('./modules/main/routes/auth.routes');
 const courseRouter=require('./modules/courses/routes/course.router');
 const adminRouter=require('./modules/admin/routes/admin.routes');
+const uploadRouter=require('./modules/uploads/routes/upload.routes');
+
+
+
+
 
 var app = express();
 app.use(cors());
@@ -22,11 +27,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.resolve(__dirname, 'public', 'uploads')));
+
 
 app.use('',studentRouter);
 app.use('',AuthenticationRouter );
 app.use('',courseRouter);
 app.use('',adminRouter);
+app.use('',uploadRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
