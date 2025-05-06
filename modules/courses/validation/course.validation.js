@@ -8,7 +8,7 @@ const db = knex(knexConfig);
 const course_id=param('course_id').isInt().withMessage('The course ID is required')
     .custom(async(value)=>{
         try {
-            const c_id=await db('courses').where({course_id:course_id}).first();
+            const c_id=await db('courses').where({course_id:value}).first();
             if(c_id){
                 return Promise.resolve("not found");
             }
