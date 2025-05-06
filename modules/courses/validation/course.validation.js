@@ -10,13 +10,13 @@ const course_id=param('course_id').isInt().withMessage('The course ID is require
         try {
             const c_id=await db('courses').where({course_id:value}).first();
             if(c_id){
-                return Promise.resolve("not found");
+                return Promise.resolve();
             }
             else{
                 return Promise.reject("Course not found.");
             }
         }catch(err){
-
+            return Promise.reject("Course not found.");
         }
     })
 
