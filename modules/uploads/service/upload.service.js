@@ -17,8 +17,8 @@ const createUpload=async ({student_id,course_id,uploaded_type,upload_name,doctor
     return result
 }
 
-const uploadListByGet=async(filters={})=>{
-    let query=db('uploads')
+const uploadList=async(filters={})=>{
+    let query=db('upload')
     if(filters.id) query=query.where('upload_id',filters.id);
     if(filters.student_id) query=query.where('student_id',filters.student_id);
     if(filters.admin_id) query=query.where('admin_id',filters.admin_id);
@@ -39,5 +39,5 @@ return await query.select('*');
 
 module.exports = {
     createUpload,
-    uploadListByGet
+    uploadList
 }
