@@ -82,6 +82,7 @@ const description = body('description')
     .optional({ nullable: true })
     .isString().withMessage('Description must be text');
 
+const action= body('action').notEmpty().isIn(['approved', 'rejected']).withMessage('Action must be approved or rejected')
 const createUploadValidation=[
     course_id,
     uploaded_type,
@@ -100,8 +101,13 @@ const getUploadValidation=[
     query('upload_name').optional().isString().trim(),
     query('doctor_name').optional().isString().trim()
 ]
+const approveUploadValidation=[
+    upload_id,action
+
+]
 
 module.exports ={
     createUploadValidation,
-    getUploadValidation
+    getUploadValidation,
+    approveUploadValidation
 }

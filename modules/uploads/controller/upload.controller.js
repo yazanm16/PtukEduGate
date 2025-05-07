@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
-const {createUpload,uploadList}=require('../service/upload.service');
+const {createUpload,uploadList,approveUploaded,rejectUploaded}=require('../service/upload.service');
 
 const createUploadByPost=async (req, res) => {
     const errors = validationResult(req);
@@ -61,7 +61,49 @@ const uploadListByGet=async (req, res) => {
     }
 }
 
+const handleUploadApprovalByPut=async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            message:errors.array()
+        })
+    }
+
+    const {upload_id} = req.params;
+    const {action}=req.body;
+    const adminID=req.user.id;
+    try{
+        let result;
+        if(action==='approved'){
+            result=await approveUploaded(upload_id,adminID)
+        }
+        else {
+            result=await rejectUploaded(upload_id,adminID)
+        }
+
+        if (!result){
+            return res.status(400).json({
+                success: false,
+                message:"No uploads found",
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: `Upload has been ${action} successfully.`,
+        });
+
+    }catch(error){
+        console.error(error)
+        res.status(500).json({
+            success: false,
+            message:error.message,
+        })
+    }
+}
+
 module.exports={
     createUploadByPost,
-    uploadListByGet
+    uploadListByGet,
+    handleUploadApprovalByPut
 }

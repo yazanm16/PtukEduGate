@@ -33,11 +33,48 @@ const uploadList=async(filters={})=>{
 return await query.select('*');
 }
 
+const approveUploaded=async(uploadId,adminId)=>{
+    const upload=await db('upload').where('upload_id',uploadId).first();
+    if(!upload) return null;
 
+    if (upload.uploaded_state !== 'pending') {
+        throw new Error(`This upload has already been ${upload.uploaded_state}`);
+    }
+    const insertData={
+        exam:'exams',
+        book:'books',
+        slide:'slides',
+        summary:'summaries',
+        video:'videos',
+    }
+    const table=insertData[upload.uploaded_type];
+    if(!table) throw new Error('Unsupported uploaded type')
 
+    const exists = await db(table).where({ upload_id: upload.upload_id }).first();
+    if (exists) throw new Error('Upload already exists in target table');
+    const uploaded={
+        upload_id:upload.upload_id,
+        course_id:upload.course_id,
+        admin_id:adminId,
+        doctor_name:upload.doctor_name,
+        [`${table.slice(0, -1)}_name`]: upload.upload_name,
+        [`${table.slice(0, -1)}_path`]: upload.upload_url
+    }
+    await db(table).insert(uploaded);
+    await db('upload').where('upload_id',uploadId).update({uploaded_state: 'approved',admin_id:adminId});
+
+return true;
+}
+
+const rejectUploaded=async(uploadId,adminId)=>{
+    const result=await db('upload').where('upload_id',uploadId).update({uploaded_state: 'rejected',admin_id:adminId});
+    return result;
+}
 
 
 module.exports = {
     createUpload,
-    uploadList
+    uploadList,
+    approveUploaded,
+    rejectUploaded,
 }
