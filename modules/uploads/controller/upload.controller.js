@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
-const {createUpload}=require('../service/upload.service');
+const {createUpload,uploadList}=require('../service/upload.service');
 
 const createUploadByPost=async (req, res) => {
     const errors = validationResult(req);
@@ -38,6 +38,30 @@ const createUploadByPost=async (req, res) => {
     }
 }
 
+const uploadListByGet=async (req, res) => {
+    try {
+        const filters=req.query;
+        const result=await uploadList(filters);
+        if (result.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No uploads found',
+            });
+        }
+        res.status(200).json({
+            success: true,
+            data: result
+        })
+    }catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+        })
+    }
+}
+
 module.exports={
-    createUploadByPost
+    createUploadByPost,
+    uploadListByGet
 }

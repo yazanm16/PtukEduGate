@@ -90,7 +90,18 @@ const createUploadValidation=[
     upload_url,
     description
 ]
+const getUploadValidation=[
+    query('id').optional().isInt().withMessage('ID must be an integer'),
+    query('student_id').optional().isInt().withMessage('ID must be an integer'),
+    query('course_id').optional().isInt().withMessage('ID must be an integer'),
+    query('admin_id').optional().isInt().withMessage('ID must be an integer'),
+    query('uploaded_state').optional().isIn(['pending','approved','rejected']).withMessage('Invalid upload state'),
+    query('uploaded_type').optional().isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid upload type'),
+    query('upload_name').optional().isString().trim(),
+    query('doctor_name').optional().isString().trim()
+]
 
 module.exports ={
-    createUploadValidation
+    createUploadValidation,
+    getUploadValidation
 }
