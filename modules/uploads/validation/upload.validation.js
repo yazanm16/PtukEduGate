@@ -103,11 +103,19 @@ const getUploadValidation=[
 ]
 const approveUploadValidation=[
     upload_id,action
+]
+
+const getUploadsStudent=[
+    query('uploaded_state').optional().isIn(['pending','approved','rejected']).withMessage('Invalid upload state'),
+    query('uploaded_type').optional().isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid upload type'),
+    query('course_id').optional().isInt().withMessage('ID must be an integer'),
+
 
 ]
 
 module.exports ={
     createUploadValidation,
     getUploadValidation,
-    approveUploadValidation
+    approveUploadValidation,
+    getUploadsStudent
 }

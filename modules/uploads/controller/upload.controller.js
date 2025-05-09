@@ -3,16 +3,9 @@ const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
-const {createUpload,uploadList,approveUploaded,rejectUploaded}=require('../service/upload.service');
+const {createUpload,uploadList,approveUploaded,rejectUploaded,getUploadStudent}=require('../service/upload.service');
 
 const createUploadByPost=async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            success: false,
-            errors: errors.array()
-        })
-    }
     try {
         const student_id=req.user.id;
         const upload_url = `${req.protocol}://${req.get('host')}/uploads/${req.body.uploaded_type}/${req.file.filename}`;
@@ -62,18 +55,10 @@ const uploadListByGet=async (req, res) => {
 }
 
 const handleUploadApprovalByPut=async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            success: false,
-            message:errors.array()
-        })
-    }
-
-    const {upload_id} = req.params;
-    const {action}=req.body;
-    const adminID=req.user.id;
     try{
+        const {upload_id} = req.params;
+        const {action}=req.body;
+        const adminID=req.user.id;
         let result;
         if(action==='approved'){
             result=await approveUploaded(upload_id,adminID)
@@ -102,8 +87,37 @@ const handleUploadApprovalByPut=async (req, res) => {
     }
 }
 
+const getUploadByFiltersForStudent=async (req, res) => {
+    try{
+        const student_id=req.user.id;
+        const filters={
+            uploaded_state:req.query.uploaded_state,
+            uploaded_type: req.query.uploaded_type,
+            course_id:req.query.course_id
+        }
+        const result=await getUploadStudent(student_id,filters);
+        if (!result||result.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No uploads found",
+            })
+        }
+        res.status(200).json({
+            success: true,
+            data: result
+        })
+    }catch (error) {
+        console.error(error)
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+        })
+    }
+}
+
 module.exports={
     createUploadByPost,
     uploadListByGet,
-    handleUploadApprovalByPut
+    handleUploadApprovalByPut,
+    getUploadByFiltersForStudent
 }

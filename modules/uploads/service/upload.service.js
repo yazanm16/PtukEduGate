@@ -71,10 +71,21 @@ const rejectUploaded=async(uploadId,adminId)=>{
     return result;
 }
 
+const getUploadStudent=async(studentId,filters={})=>{
+    let query=db('upload').where('student_id',studentId);
+    if(filters.uploaded_state) query=query.where('uploaded_state',filters.uploaded_state);
+    if(filters.uploaded_type) query=query.where('uploaded_type',filters.uploaded_type);
+    if(filters.course_id) query=query.where('course_id',filters.course_id);
+
+    return await query.select('*');
+
+}
+
 
 module.exports = {
     createUpload,
     uploadList,
     approveUploaded,
     rejectUploaded,
+    getUploadStudent
 }
