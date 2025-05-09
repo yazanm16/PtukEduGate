@@ -3,17 +3,26 @@ const{studentCreate,studentList,getStudentProfile,deleteStudent,updateStudent}=r
 const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
+const e = require("express");
 const db = knex(knexConfig);
 
 const studentCreateByPost=async (req, res) => {
-const errors = validationResult(req);
-if(!errors.isEmpty()){
-    return res.json({errors: errors});
-
+try {
+    const {student_name,student_username,student_email,student_password}=req.body;
+    const result=await studentCreate(student_name,student_username,student_email,student_password);
+    return res.status(201).json({
+        status:true,
+        data:result
+    });
+}catch(err){
+    console.log(err);
+    res.status(500).json({
+        status:false,
+        message:err.message
+    })
 }
-const {student_name,student_username,student_email,student_password}=req.body;
-const result=await studentCreate(student_name,student_username,student_email,student_password);
-return res.json(result);
+
+
 }
 
 const studentListByGet=async (req, res) => {
