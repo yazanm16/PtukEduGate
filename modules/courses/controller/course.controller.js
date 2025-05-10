@@ -49,7 +49,7 @@ const getCoursesByGet = async (req, res) => {
 
 const updateCourseByPut = async (req, res) => {
     try{
-        const id=req.params;
+        const {course_id}=req.params;
         const {course_name,course_note}=req.body;
         const data={};
         if(course_note) data.course_note=course_note;
@@ -60,7 +60,7 @@ const updateCourseByPut = async (req, res) => {
                 message:"No data to update."
             })
         }
-        const result=await updateCourse(id,data);
+        const result=await updateCourse(course_id,data);
         if(result===0){
             return res.status(404).json({
                 success:false,
@@ -82,8 +82,8 @@ const updateCourseByPut = async (req, res) => {
 
 const deleteCourseByDelete = async (req, res) => {
     try {
-        const {id} = req.params;
-        const result=await deleteCourse(id);
+        const {course_id} = req.params;
+        const result=await deleteCourse(course_id);
         if(result===0){
             return res.status(404).json({
                 success:false,

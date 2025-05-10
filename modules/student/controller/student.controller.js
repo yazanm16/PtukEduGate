@@ -74,8 +74,8 @@ const getStudentProfileByGet=async (req, res) => {
 
 const deleteStudentByDelete=async (req, res) => {
     try{
-        const {id}=req.params;
-        const result=await deleteStudent(id);
+        const {student_id}=req.params;
+        const result=await deleteStudent(student_id);
         if (!result){
             res.status(404).json({
                 success:false,

@@ -12,7 +12,7 @@ router.post('/admins/create-from-student',Authenticated,authorizeRoles('superadm
 
 router.get('/admins-list-filters',Authenticated,authorizeRoles('superadmin'),getAdminsValidation,validate,adminsListByGet)
 
-router.delete('/admins-delete/:id',Authenticated,authorizeRoles('superadmin'),deleteAdminValidation,validate,deleteAdminByDelete)
+router.delete('/admins-delete/:admin_id',Authenticated,authorizeRoles('superadmin'),deleteAdminValidation,validate,deleteAdminByDelete)
 
 router.put('/admin/update-profile',Authenticated,authorizeRoles('superadmin'),updateAdminValidation,validate,updateAdminByPut)
 

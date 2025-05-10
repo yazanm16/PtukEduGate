@@ -10,7 +10,7 @@ const validate = require("../../main/middelware/handleValidation");
 router.post('/signup',createStudentValidation,validate,studentCreateByPost);
 router.get('/admin/all-student-filters',Authenticated,authorizeRoles('superadmin'),getStudentsValidation,validate,studentListByGet);
 router.get('/profile',Authenticated,authorizeRoles('student'),getStudentProfileByGet);
-router.delete('/admin/delete-student/:id',Authenticated,authorizeRoles('superadmin'),deleteStudentValidation,validate,deleteStudentByDelete);
+router.delete('/admin/delete-student/:student_id',Authenticated,authorizeRoles('superadmin'),deleteStudentValidation,validate,deleteStudentByDelete);
 router.put('/student/update-profile',Authenticated,authorizeRoles('student'),updateStudentValidation,validate,updateStudentByPut);
 router.put('/student/change-password',Authenticated,authorizeRoles('student'),changePasswordValidation,validate,updatePasswordByPut);
 

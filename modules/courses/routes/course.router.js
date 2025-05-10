@@ -13,8 +13,8 @@ const validate = require("../../main/middelware/handleValidation");
 
 router.post('/admin/courses/create',Authenticated,authorizeRoles('admin','superadmin'),createCourseValidation,validate,creteCourseByPost);
 router.get('/courses-filters',getCoursesValidation,getCoursesByGet);
-router.put('/admin/course/update/:id',Authenticated,authorizeRoles('admin','superadmin'),updateCourseValidation,validate,updateCourseByPut);
-router.delete('admin/course/delete/:id',Authenticated,authorizeRoles('admin','superadmin'),deleteCourseValidation,validate,deleteCourseByDelete);
+router.put('/admin/course/update/:course_id',Authenticated,authorizeRoles('admin','superadmin'),updateCourseValidation,validate,updateCourseByPut);
+router.delete('admin/course/delete/:course_id',Authenticated,authorizeRoles('admin','superadmin'),deleteCourseValidation,validate,deleteCourseByDelete);
 
 
 

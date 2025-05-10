@@ -48,8 +48,8 @@ const adminsListByGet=async(req,res)=>{
 
 const deleteAdminByDelete=async(req,res)=>{
     try {
-        const {id}=req.params;
-        const result=await deleteAdmin(id);
+        const {admin_id}=req.params;
+        const result=await deleteAdmin(admin_id);
         res.status(200).json({
             success:true,
             message:result
