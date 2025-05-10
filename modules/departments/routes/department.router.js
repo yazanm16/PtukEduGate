@@ -5,7 +5,6 @@ const authorizeRoles=require('../../main/middelware/authorizeRoles.middleware')
 const validate = require("../../main/middelware/handleValidation");
 const {createDepartmentValidation, getDepartmentsValidation, updateDepartmentValidation,deleteDepartmentValidation} = require("../validation/department.validation");
 const {createDepartmentByPost, getDepartmentsByGet, updateDepartmentByPut, deleteDepartmentByDelete} = require("../controller/department.controller");
-const {deleteDepartment} = require("../service/department.service");
 
 
 
