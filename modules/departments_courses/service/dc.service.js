@@ -28,7 +28,17 @@ const listDepartmentsCourses=async (filters={})=>{
 
     return await query;
 }
+
+const updateDC=async (dc_id,data)=>{
+    return await db('departments_courses').where('dc_id',dc_id).update(data);
+}
+
+const deleteDC=async(dc_id)=>{
+    return await db('departments_courses').where('dc_id',dc_id).delete();
+}
 module.exports={
     linkCourseToDepartment,
-    listDepartmentsCourses
+    listDepartmentsCourses,
+    updateDC,
+    deleteDC
 }

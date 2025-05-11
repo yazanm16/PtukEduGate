@@ -3,6 +3,22 @@ const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
+
+const dc_id=param('dc_id').isInt().withMessage('The department course ID is required')
+    .custom(async(value)=>{
+        try {
+            const dc_id=await db('departments_courses').where({dc_id:value}).first();
+            if(dc_id){
+                return Promise.resolve();
+            }
+            else{
+                return Promise.reject("Department Course not found.");
+            }
+        }
+        catch (err){
+            return Promise.reject("Department Course not found.");
+        }
+    })
 const course_id=body('course_id').isInt().withMessage('The course ID is required')
     .custom(async(value)=>{
         try {
@@ -46,7 +62,18 @@ const getDepartmentCoursesValidation=[
     query('department_id').optional().isInt().withMessage('Department ID must be an integer'),
     query('dc_type').optional().isString().withMessage('Type must be string')
 ]
+const updateDepartmentCourseValidation=[
+    dc_id,
+    body('course_id').optional().isInt().withMessage('Course ID must be an integer'),
+    body('departments_id').optional().isInt().withMessage('Department ID must be an integer'),
+    body('dc_type').optional().notEmpty().withMessage('dc_type must not be empty')
+]
+const deleteDepartmentCourseValidation=[
+    dc_id
+]
 module.exports={
     linkDepartmentWithCourseValidation,
-    getDepartmentCoursesValidation
+    getDepartmentCoursesValidation,
+    updateDepartmentCourseValidation,
+    deleteDepartmentCourseValidation
 }
