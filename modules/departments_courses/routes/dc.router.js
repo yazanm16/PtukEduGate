@@ -11,5 +11,5 @@ const {linkCourseToDepartmentByPost, getDepartmentsCoursesByGet} = require("../c
 
 router.post('/admin/link-course',Authenticated,authorizeRoles('superadmin'),linkDepartmentWithCourseValidation,validate,linkCourseToDepartmentByPost)
 
-router.get('/list-courses-departments',Authenticated,getDepartmentCoursesValidation,validate,getDepartmentsCoursesByGet)
+router.get('/list-courses-departments',getDepartmentCoursesValidation,validate,getDepartmentsCoursesByGet)
 module.exports = router;
