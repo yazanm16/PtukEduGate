@@ -12,8 +12,8 @@ router.post('/admin/department-create',Authenticated,authorizeRoles('superadmin'
 
 router.get('/department-list',Authenticated,getDepartmentsValidation,validate,getDepartmentsByGet)
 
-router.put('/admin/department-update',Authenticated,authorizeRoles('superadmin'),updateDepartmentValidation,validate,updateDepartmentByPut)
+router.put('/admin/department-update/:departments_id',Authenticated,authorizeRoles('superadmin'),updateDepartmentValidation,validate,updateDepartmentByPut)
 
-router.delete('/admin/department-delete',Authenticated,authorizeRoles('superadmin'),deleteDepartmentValidation,validate,deleteDepartmentByDelete)
+router.delete('/admin/department-delete/:departments_id',Authenticated,authorizeRoles('superadmin'),deleteDepartmentValidation,validate,deleteDepartmentByDelete)
 
 module.exports = router;

@@ -85,11 +85,16 @@ const changeAdminPass=async(admin_id,old_password,new_password)=>{
     }
     return 'Password changed successfully.';
 }
+
+const updateDA=async(admin_id,department_id)=>{
+    return await db('admins').where({admin_id:admin_id}).update({department_id:department_id});
+}
 module.exports={
     createAdmin,
     adminList,
     deleteAdmin,
     updateAdmin,
     adminProfile,
-    changeAdminPass
+    changeAdminPass,
+    updateDA
 };

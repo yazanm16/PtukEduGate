@@ -102,7 +102,7 @@ const getUploadValidation=[
     query('doctor_name').optional().isString().trim()
 ]
 const approveUploadValidation=[
-    upload_id,action
+    upload_id,action.optional()
 ]
 
 const getUploadsStudent=[

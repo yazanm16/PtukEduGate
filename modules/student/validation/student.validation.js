@@ -83,9 +83,9 @@ const deleteStudentValidation=[
     student_id
 ]
 const updateStudentValidation=[
-    student_name,
-    student_username,
-    student_email,
+    student_name.optional(),
+    student_username.optional(),
+    student_email.optional(),
 ]
 const changePasswordValidation=[
     student_password,

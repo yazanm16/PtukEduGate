@@ -95,7 +95,7 @@ const deleteAdminValidation=[
 ]
 
 const updateAdminValidation=[
-    admin_name,admin_email,admin_username
+    admin_name,admin_email.optional(),admin_username.optional()
 ]
 const getAdminsValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
@@ -107,10 +107,15 @@ const getAdminsValidation=[
 const changeAdminPasswordValidation=[
     new_password,admin_password
 ]
+const updateAdminDepartmentValidation=[
+    admin_id,
+    department_id
+]
 module.exports={
     createAdminValidation,
     deleteAdminValidation,
     updateAdminValidation,
     getAdminsValidation,
-    changeAdminPasswordValidation
+    changeAdminPasswordValidation,
+    updateAdminDepartmentValidation
 }

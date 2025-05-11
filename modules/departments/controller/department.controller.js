@@ -46,10 +46,10 @@ const getDepartmentsByGet = async (req, res) => {
 
 const updateDepartmentByPut = async (req, res) => {
     try{
-        const {department_id} = req.params;
+        const {departments_id} = req.params;
         const{departments_name,college_id}=req.body;
         const data={}
-        if(departments_name)data.department_id=department_id;
+        if(departments_name)data.departments_name=departments_name;
         if(college_id)data.college_id=college_id;
         if(Object.keys(data).length===0){
             res.status(404).json({
@@ -58,7 +58,7 @@ const updateDepartmentByPut = async (req, res) => {
             })
         }
 
-        const result=await updateDepartment(department_id,data);
+        const result=await updateDepartment(departments_id,data);
         if (result===0){
             res.status(404).json({
                 success:false,
@@ -81,8 +81,8 @@ const updateDepartmentByPut = async (req, res) => {
 
 const deleteDepartmentByDelete = async (req, res) => {
     try{
-        const {department_id} = req.params;
-        const result=await deleteDepartment(department_id);
+        const {departments_id} = req.params;
+        const result=await deleteDepartment(departments_id);
         if(result===0){
             res.status(404).json({
                 success:false,

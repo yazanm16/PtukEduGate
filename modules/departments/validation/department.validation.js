@@ -50,8 +50,8 @@ const getDepartmentsValidation=[
 
 const updateDepartmentValidation=[
     departments_id,
-    departments_name,
-    college_id
+    body('departments_name').optional().isString().trim(),
+    college_id.optional()
 ]
 
 const deleteDepartmentValidation=[

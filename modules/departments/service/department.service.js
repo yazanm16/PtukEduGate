@@ -16,11 +16,11 @@ const DepartmentList=async (filters={})=>{
 }
 
 const updateDepartment=async (departments_id,data)=>{
-    return await db('departments').where('department_id',departments_id).update(data);
+    return await db('departments').where('departments_id',departments_id).update(data);
 }
 
-const deleteDepartment=async(department_id)=>{
-    return await db('departments').where('department_id',department_id).delete();
+const deleteDepartment=async(departments_id)=>{
+    return await db('departments').where('departments_id',departments_id).delete();
 }
 module.exports={
     createDepartment,

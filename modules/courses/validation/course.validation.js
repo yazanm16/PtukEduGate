@@ -30,7 +30,7 @@ const createCourseValidation=[
 ]
 const updateCourseValidation=[
     course_id,
-    course_name,
+    body('course_name').optional().isString().withMessage('Course name must be a string'),
     course_note
 ]
 const deleteCourseValidation=[
