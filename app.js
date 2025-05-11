@@ -11,7 +11,7 @@ const courseRouter=require('./modules/courses/routes/course.router');
 const adminRouter=require('./modules/admin/routes/admin.routes');
 const uploadRouter=require('./modules/uploads/routes/upload.routes');
 const departmentRouter=require('./modules/departments/routes/department.router');
-
+const departmentCourseRouter=require('./modules/departments_courses/routes/dc.router')
 
 
 
@@ -37,6 +37,7 @@ app.use('',courseRouter);
 app.use('',adminRouter);
 app.use('',uploadRouter);
 app.use('',departmentRouter);
+app.use('',departmentCourseRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
