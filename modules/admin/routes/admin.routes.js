@@ -14,7 +14,7 @@ router.get('/admins-list-filters',Authenticated,authorizeRoles('superadmin'),get
 
 router.delete('/admins-delete/:admin_id',Authenticated,authorizeRoles('superadmin'),deleteAdminValidation,validate,deleteAdminByDelete)
 
-router.put('/admin/update-profile',Authenticated,authorizeRoles('superadmin'),updateAdminValidation,validate,updateAdminByPut)
+router.put('/admin/update-profile',Authenticated,authorizeRoles('admin','superadmin'),updateAdminValidation,validate,updateAdminByPut)
 
 router.get('admin-profile',Authenticated,authorizeRoles('admin','superadmin'),getAdminProfileByGet)
 

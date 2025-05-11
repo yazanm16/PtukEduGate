@@ -18,9 +18,9 @@ const admin_id=param('admin_id').isInt().withMessage('Admin ID is must be valid'
         }
     })
 
-const admin_name=body('admin_name').notEmpty().withMessage('Admin name is required');
+const admin_name=body('admin_name').isString();
 
-const admin_username=body('admin_username').notEmpty().withMessage('Admin username is required')
+const admin_username=body('admin_username').isString()
     .custom(async(val,{req})=>{
         const user = await db('admins')
             .where('admin_username', val)
