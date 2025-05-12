@@ -12,7 +12,7 @@ const adminRouter=require('./modules/admin/routes/admin.routes');
 const uploadRouter=require('./modules/uploads/routes/upload.routes');
 const departmentRouter=require('./modules/departments/routes/department.router');
 const departmentCourseRouter=require('./modules/departments_courses/routes/dc.router')
-
+const collegeRouter=require('./modules/colleges/routes/college.router');
 
 
 
@@ -38,6 +38,7 @@ app.use('',adminRouter);
 app.use('',uploadRouter);
 app.use('',departmentRouter);
 app.use('',departmentCourseRouter);
+app.use('',collegeRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
