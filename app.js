@@ -14,6 +14,7 @@ const departmentRouter=require('./modules/departments/routes/department.router')
 const departmentCourseRouter=require('./modules/departments_courses/routes/dc.router')
 const collegeRouter=require('./modules/colleges/routes/college.router');
 const bookRouter=require('./modules/books/routes/book.router');
+const examsRouter=require('./modules/exams/routes/exam.router');
 
 
 var app = express();
@@ -40,6 +41,7 @@ app.use('',departmentRouter);
 app.use('',departmentCourseRouter);
 app.use('',collegeRouter);
 app.use('',bookRouter);
+app.use('',examsRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
