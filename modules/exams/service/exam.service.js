@@ -26,7 +26,7 @@ const getExam=async (filters={})=>{
 const deleteExam=async(exam_id)=>{
     const exam=await db('exams').where('exam_id',exam_id).first();
     if(!exam)return "Exam not found";
-    const filePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'exam', path.basename(book.book_path));
+    const filePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'exam', path.basename(exam.exam_path));
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
