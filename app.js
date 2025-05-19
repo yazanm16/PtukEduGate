@@ -17,6 +17,7 @@ const bookRouter=require('./modules/books/routes/book.router');
 const examsRouter=require('./modules/exams/routes/exam.router');
 const slideRouter=require('./modules/slides/routes/slide.routes');
 const summaryRouter=require('./modules/summaries/routes/summary.routes');
+const favouriteRouter=require('./modules/favorites/routes/favorite.router');
 
 
 var app = express();
@@ -46,6 +47,7 @@ app.use('',bookRouter);
 app.use('',examsRouter);
 app.use('',slideRouter);
 app.use('',summaryRouter);
+app.use('',favouriteRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
