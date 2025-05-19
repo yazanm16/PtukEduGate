@@ -7,7 +7,7 @@ const createSlideByPost=async (req,res)=>{
         return res.status(400).json({ success: false, message: 'File is required' });
     }
     try{
-        const admin_id=req.admin_id;
+        const admin_id=req.user.id;
         const slide_path = `${req.protocol}://${req.get('host')}/uploads/slide/${req.file.filename}`;
         const{slide_name,course_id,doctor_name}=req.body;
         await createSlide(slide_name,course_id,doctor_name,slide_path,admin_id);
