@@ -2,10 +2,10 @@
 const { login, forgotPassword, resetPassword} = require("../service/auth.service");
 
 const loginByPost = async (req, res) => {
-    const { emailOrUsername, password } = req.body;
+    const { emailOrUsername, password,rememberMe  } = req.body;
 
     try {
-        const result = await login(emailOrUsername, password);
+        const result = await login(emailOrUsername, password,rememberMe );
         res.status(200).json({
             success: true,
             message: "Login successful",

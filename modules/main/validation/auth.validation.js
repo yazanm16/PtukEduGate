@@ -20,9 +20,14 @@ const token = body('token').notEmpty().withMessage('Token is required')
 const new_password=body('new_password').notEmpty().withMessage('New Password is required')
     .isLength({min:6}).withMessage('Password must be at least 6 characters')
 
+const rememberMe = body('rememberMe')
+    .optional()
+    .isBoolean().withMessage('rememberMe must be a boolean');
+
 const loginValidation = [
     emailOrUsername,
-    password
+    password,
+    rememberMe
 ];
 
 const forgotPasswordValidation=[

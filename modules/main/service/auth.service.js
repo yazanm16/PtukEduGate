@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt=require('jsonwebtoken');
 const {sendResetEmail} = require("../utils/sendResetEmail");
 
-const login=async (emailOrUsername, password)=>{
+const login=async (emailOrUsername, password,rememberMe =false)=>{
     let user;
     let role;
     let userId;
@@ -55,7 +55,7 @@ const login=async (emailOrUsername, password)=>{
         role:role
 
     },process.env.JWT_SECRET,
-        {expiresIn: '6h'}
+        {expiresIn:rememberMe ?'30d':'6h'}
     );
     return{
         token,
