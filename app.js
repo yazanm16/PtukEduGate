@@ -18,6 +18,7 @@ const examsRouter=require('./modules/exams/routes/exam.router');
 const slideRouter=require('./modules/slides/routes/slide.routes');
 const summaryRouter=require('./modules/summaries/routes/summary.routes');
 const favouriteRouter=require('./modules/favorites/routes/favorite.router');
+const videoRouter=require('./modules/videos/routes/video.routes');
 
 
 var app = express();
@@ -48,6 +49,7 @@ app.use('',examsRouter);
 app.use('',slideRouter);
 app.use('',summaryRouter);
 app.use('',favouriteRouter);
+app.use('',videoRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
