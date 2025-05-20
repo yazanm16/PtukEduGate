@@ -3,7 +3,7 @@ const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
-const summary_id=body('summary_id').isInt().withMessage('summary id must be an integer')
+const summary_id=param('summary_id').isInt().withMessage('summary id must be an integer')
     .custom(async (value)=>{
         try {
             const s_id=await db('summaries').where('summary_id',value).first();
