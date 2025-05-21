@@ -30,7 +30,7 @@ const deleteExam=async(exam_id)=>{
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
-
+    await db('favorites').where({content_type:'exam',content_id:exam_id}).delete();
     await db('exams').where('exam_id',exam_id).delete();
     return true;
 }

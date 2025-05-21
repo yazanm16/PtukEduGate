@@ -29,7 +29,7 @@ const deleteSlide=async(slide_id)=>{
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
-
+    await db('favorites').where({content_type:'slide',content_id:slide_id}).delete();
     await db('slides').where('slide_id',slide_id).delete();
     return true;
 }

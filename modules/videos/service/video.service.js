@@ -29,7 +29,7 @@ const deleteVideo=async(video_id)=>{
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
-
+    await db('favorites').where({content_type:'video',content_id:video_id}).delete();
     await db('videos').where('video_id',video_id).delete();
     return true;
 }

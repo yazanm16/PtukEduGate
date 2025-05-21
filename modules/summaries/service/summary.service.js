@@ -29,7 +29,7 @@ const deleteSummary=async(summary_id)=>{
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
-
+    await db('favorites').where({content_type:'summary',content_id:summary_id}).delete();
     await db('summaries').where('summary_id',summary_id).delete();
     return true;
 }
