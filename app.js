@@ -20,6 +20,7 @@ const summaryRouter=require('./modules/summaries/routes/summary.routes');
 const favouriteRouter=require('./modules/favorites/routes/favorite.router');
 const videoRouter=require('./modules/videos/routes/video.routes');
 const studentCourseRouter=require('./modules/students_courses/routes/sc.router');
+const downloadRouter=require('./modules/download/routes/download.routes');
 
 var app = express();
 app.use(cors());
@@ -51,6 +52,7 @@ app.use('',summaryRouter);
 app.use('',favouriteRouter);
 app.use('',videoRouter);
 app.use('',studentCourseRouter);
+app.use('',downloadRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
