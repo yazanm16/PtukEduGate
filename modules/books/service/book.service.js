@@ -5,9 +5,9 @@ const path = require('path');
 const db = knex(knexConfig);
 
 
-const createBook=async ({book_name,course_id,doctor_name,book_path,admin_id})=>{
+const createBook=async ({book_name,course_id,doctor_name,book_path,admin_id,description})=>{
     await db('books').insert({
-        book_name,course_id,doctor_name,book_path,admin_id,upload_id:null
+        book_name,course_id,doctor_name,book_path,admin_id,upload_id:null,description
     });
 }
 

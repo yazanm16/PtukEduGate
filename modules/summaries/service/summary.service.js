@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const db = knex(knexConfig);
 
-const createSummary=async ({summary_name,course_id,doctor_name,summary_path,admin_id})=>{
+const createSummary=async ({summary_name,course_id,doctor_name,summary_path,admin_id,description})=>{
     await db('summaries').insert({
-        summary_name,course_id,doctor_name,summary_path,admin_id,upload_id:null
+        summary_name,course_id,doctor_name,summary_path,admin_id,upload_id:null,description
     });
 }
 

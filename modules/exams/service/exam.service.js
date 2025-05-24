@@ -5,9 +5,9 @@ const path = require('path');
 const db = knex(knexConfig);
 
 
-const createExam=async ({exam_name,course_id,doctor_name,exam_path,admin_id})=>{
+const createExam=async ({exam_name,course_id,doctor_name,exam_path,admin_id,description})=>{
     await db('exams').insert({
-        exam_name,course_id,doctor_name,exam_path,admin_id,upload_id:null
+        exam_name,course_id,doctor_name,exam_path,admin_id,upload_id:null,description
     });
 }
 

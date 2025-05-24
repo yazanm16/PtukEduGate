@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const exam_id=param('exam_id').isInt().withMessage('exam_id must be an integer')
+    .bail()
     .custom(async (value)=>{
         try {
             const e_id=await db('exams').where('exam_id',value).first();
@@ -19,14 +20,16 @@ const exam_id=param('exam_id').isInt().withMessage('exam_id must be an integer')
     })
 
 
-const exam_name = body('exam_name').notEmpty().withMessage('The exam name is required')
+const exam_name =()=>body('exam_name').notEmpty().withMessage('The exam name is required')
+    .bail()
     .isString().withMessage('The exam name must be a string')
 
-const doctor_name = body('doctor_name')
+const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })
     .isLength({ max: 255 }).withMessage('Doctor name is too long');
 
 const course_id=body('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -41,10 +44,15 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
         }
     })
 
+const description = body('description')
+    .optional({ nullable: true })
+    .isString().withMessage('Description must be text');
+
 const createExamValidation=[
-    exam_name,
-    doctor_name,
-    course_id
+    exam_name(),
+    doctor_name(),
+    course_id,
+    description
 ]
 const getExamValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
@@ -60,8 +68,9 @@ const deleteExamValidation=[
 ]
 const updateExamValidation=[
     exam_id,
-    exam_name.optional(),
-    doctor_name.optional()
+    exam_name().optional(),
+    doctor_name().optional(),
+    description
 ]
 module.exports={
     createExamValidation,

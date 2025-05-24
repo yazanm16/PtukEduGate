@@ -9,8 +9,8 @@ const createVideoByPost=async (req,res)=>{
     try{
         const admin_id=req.user.id;
         const video_path = `${req.protocol}://${req.get('host')}/uploads/video/${req.file.filename}`;
-        const{video_name,course_id,doctor_name}=req.body;
-        await createVideo({video_name, course_id, doctor_name, video_path, admin_id});
+        const{video_name,course_id,doctor_name,description}=req.body;
+        await createVideo({video_name, course_id, doctor_name, video_path, admin_id,description});
         return res.status(200).json({success:true,message:"Video created successfully"});
 
     }catch (err){

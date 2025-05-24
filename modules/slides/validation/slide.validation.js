@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const slide_id=param('slide_id').isInt().withMessage('slide_id must be an integer')
+    .bail()
     .custom(async (value)=>{
         try {
             const s_id=await db('slides').where('slide_id',value).first();
@@ -18,14 +19,16 @@ const slide_id=param('slide_id').isInt().withMessage('slide_id must be an intege
         }
     })
 
-const slide_name = body('slide_name').notEmpty().withMessage('The slide name is required')
+const slide_name =()=> body('slide_name').notEmpty().withMessage('The slide name is required')
+    .bail()
 .isString().withMessage('The slide name must be a string')
 
-const doctor_name = body('doctor_name')
+const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })
     .isLength({ max: 255 }).withMessage('Doctor name is too long');
 
 const course_id=body('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -40,10 +43,15 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
         }
     })
 
+const description = body('description')
+    .optional({ nullable: true })
+    .isString().withMessage('Description must be text');
+
 const createSlideValidation=[
-    slide_name,
-    doctor_name,
-    course_id
+    slide_name(),
+    doctor_name(),
+    course_id,
+    description
 ]
 const getSlidesValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
@@ -59,8 +67,9 @@ const deleteSlideValidation=[
 ]
 const updateSlideValidation=[
     slide_id,
-    slide_name.optional(),
-    doctor_name.optional()
+    slide_name().optional(),
+    doctor_name().optional(),
+    description
 ]
 module.exports={
     createSlideValidation,

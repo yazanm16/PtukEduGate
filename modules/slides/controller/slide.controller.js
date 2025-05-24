@@ -9,8 +9,8 @@ const createSlideByPost=async (req,res)=>{
     try{
         const admin_id=req.user.id;
         const slide_path = `${req.protocol}://${req.get('host')}/uploads/slide/${req.file.filename}`;
-        const{slide_name,course_id,doctor_name}=req.body;
-        await createSlide(slide_name,course_id,doctor_name,slide_path,admin_id);
+        const{slide_name,course_id,doctor_name,description}=req.body;
+        await createSlide({slide_name, course_id, doctor_name, slide_path, admin_id, description});
         return res.status(200).json({success:true,message:"slide created successfully"});
 
     }catch (err){

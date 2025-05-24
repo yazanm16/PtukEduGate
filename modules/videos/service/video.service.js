@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const db = knex(knexConfig);
 
-const createVideo=async ({video_name,course_id,doctor_name,video_path,admin_id})=>{
+const createVideo=async ({video_name,course_id,doctor_name,video_path,admin_id,description})=>{
     await db('videos').insert({
-        video_name,course_id,doctor_name,video_path,admin_id,upload_id:null
+        video_name,course_id,doctor_name,video_path,admin_id,upload_id:null,description
     });
 }
 

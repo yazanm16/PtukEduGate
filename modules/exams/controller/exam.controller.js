@@ -10,8 +10,8 @@ const createExamByPost=async(req,res)=>{
     try {
         const admin_id = req.user.id;
         const exam_path = `${req.protocol}://${req.get('host')}/uploads/exam/${req.file.filename}`;
-        const { exam_name, course_id, doctor_name } = req.body;
-        await createExam({ exam_name, course_id, doctor_name, exam_path, admin_id})
+        const { exam_name, course_id, doctor_name,description } = req.body;
+        await createExam({ exam_name, course_id, doctor_name, exam_path, admin_id,description})
         return res.status(200).json({ success: true, message: 'Exam created successfully' });
     }catch (err) {
         console.log(err);

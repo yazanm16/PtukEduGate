@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const video_id=param('video_id').isInt().withMessage('Video id must be an integer')
+    .bail()
     .custom(async (value)=>{
         try {
             const v_id=await db('videos').where('video_id',value).first();
@@ -18,14 +19,16 @@ const video_id=param('video_id').isInt().withMessage('Video id must be an intege
         }
     })
 
-const video_name = body('video_name').notEmpty().withMessage('The Video name is required')
+const video_name =()=> body('video_name').notEmpty().withMessage('The Video name is required')
+    .bail()
 .isString().withMessage('The Video name must be a string')
 
-const doctor_name = body('doctor_name')
+const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })
     .isLength({ max: 255 }).withMessage('Doctor name is too long');
 
 const course_id=body('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -40,10 +43,15 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
         }
     })
 
+const description = body('description')
+    .optional({ nullable: true })
+    .isString().withMessage('Description must be text');
+
 const createVideoValidation=[
-    video_name,
-    doctor_name,
-    course_id
+    video_name(),
+    doctor_name(),
+    course_id,
+    description
 ]
 const getVideoValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
@@ -59,8 +67,9 @@ const deleteVideoValidation=[
 ]
 const updateVideoValidation=[
     video_id,
-    video_name.optional(),
-    doctor_name.optional()
+    video_name().optional(),
+    doctor_name().optional(),
+    description
 ]
 module.exports={
    createVideoValidation,

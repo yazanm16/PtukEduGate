@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const db = knex(knexConfig);
 
-const createSlide=async ({slide_name,course_id,doctor_name,slide_path,admin_id})=>{
+const createSlide=async ({slide_name,course_id,doctor_name,slide_path,admin_id,description})=>{
     await db('slides').insert({
-        slide_name,course_id,doctor_name,slide_path,admin_id,upload_id:null
+        slide_name,course_id,doctor_name,slide_path,admin_id,upload_id:null,description
     });
 }
 

@@ -9,8 +9,8 @@ const createSummaryByPost=async (req,res)=>{
     try{
         const admin_id=req.user.id;
         const summary_path = `${req.protocol}://${req.get('host')}/uploads/summary/${req.file.filename}`;
-        const{summary_name,course_id,doctor_name}=req.body;
-        await createSummary({summary_name, course_id, doctor_name, summary_path, admin_id});
+        const{summary_name,course_id,doctor_name,description}=req.body;
+        await createSummary({summary_name, course_id, doctor_name, summary_path, admin_id,description});
         return res.status(200).json({success:true,message:"summary created successfully"});
 
     }catch (err){

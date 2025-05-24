@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const summary_id=param('summary_id').isInt().withMessage('summary id must be an integer')
+    .bail()
     .custom(async (value)=>{
         try {
             const s_id=await db('summaries').where('summary_id',value).first();
@@ -18,14 +19,16 @@ const summary_id=param('summary_id').isInt().withMessage('summary id must be an 
         }
     })
 
-const summary_name = body('summary_name').notEmpty().withMessage('The summary name is required')
+const summary_name =()=> body('summary_name').notEmpty().withMessage('The summary name is required')
+    .bail()
 .isString().withMessage('The Summary name must be a string')
 
-const doctor_name = body('doctor_name')
+const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })
     .isLength({ max: 255 }).withMessage('Doctor name is too long');
 
 const course_id=body('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -40,10 +43,15 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
         }
     })
 
+const description = body('description')
+    .optional({ nullable: true })
+    .isString().withMessage('Description must be text');
+
 const createSummaryValidation=[
-    summary_name,
-    doctor_name,
-    course_id
+    summary_name(),
+    doctor_name(),
+    course_id,
+    description
 ]
 const getSummaryValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
@@ -59,8 +67,9 @@ const deleteSummaryValidation=[
 ]
 const updateSummaryValidation=[
     summary_id,
-    summary_name.optional(),
-    doctor_name.optional()
+    summary_name().optional(),
+    doctor_name().optional(),
+    description
 ]
 module.exports={
    createSummaryValidation,
