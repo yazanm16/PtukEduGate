@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const SC_id=param('SC_id').isInt().withMessage('Student Courses ID must be an integer')
+    .bail()
     .custom(async(value)=>{
         try {
             const cs_id=await db('students_courses').where('SC_id',value).first()
@@ -19,6 +20,7 @@ const SC_id=param('SC_id').isInt().withMessage('Student Courses ID must be an in
     })
 
 const course_id=body('course_id').isInt().withMessage('Course ID must be an integer')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -34,6 +36,7 @@ const course_id=body('course_id').isInt().withMessage('Course ID must be an inte
     })
 
 const student_id=body('student_id').isInt().withMessage('Student ID is must be valid')
+    .bail()
     .custom(async(val)=>{
         try {
             const s_id=await db('students').where('student_id',val).first();

@@ -5,6 +5,7 @@ const db = knex(knexConfig);
 
 
 const college_id=param('college_id').isInt().withMessage('The college ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('colleges').where({college_id:value}).first();
@@ -19,13 +20,17 @@ const college_id=param('college_id').isInt().withMessage('The college ID is requ
         }
     })
 
-const college_name=body('college_name').notEmpty().withMessage('The college name is required');
+const college_name=()=>body('college_name').notEmpty().withMessage('The college name is required');
 
 const createCollegeValidation=[
     college_name
 ]
 const deleteCollegeValidation=[
     college_id
+]
+const updateCollegeValidation=[
+    college_id,
+    college_name().optional()
 ]
 const getCollegesValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),
@@ -35,5 +40,6 @@ const getCollegesValidation=[
 module.exports={
     createCollegeValidation,
     deleteCollegeValidation,
-    getCollegesValidation
+    getCollegesValidation,
+    updateCollegeValidation
 }

@@ -5,6 +5,7 @@ const db = knex(knexConfig);
 
 
 const departments_id=param('departments_id').isInt().withMessage('Department ID is must be valid')
+    .bail()
     .custom(async(val)=>{
         try {
             const d_id=await db('departments').where('departments_id',val).first();
@@ -19,9 +20,10 @@ const departments_id=param('departments_id').isInt().withMessage('Department ID 
         }
     })
 
-const departments_name=body('departments_name').notEmpty().withMessage('Department Name is required');
+const departments_name=()=>body('departments_name').notEmpty().withMessage('Department Name is required');
 
-const college_id=body('college_id').isInt().withMessage('College ID must be valid')
+const college_id=()=>body('college_id').isInt().withMessage('College ID must be valid')
+    .bail()
     .custom(async(val)=>{
         try{
             const coll_id=await db('colleges').where('college_id',val).first();
@@ -38,8 +40,8 @@ const college_id=body('college_id').isInt().withMessage('College ID must be vali
 
 
 const createDepartmentValidation=[
-    departments_name,
-    college_id
+    departments_name(),
+    college_id()
 ]
 
 const getDepartmentsValidation=[
@@ -50,8 +52,8 @@ const getDepartmentsValidation=[
 
 const updateDepartmentValidation=[
     departments_id,
-    body('departments_name').optional().isString().trim(),
-    college_id.optional()
+    departments_name().optional(),
+    college_id().optional()
 ]
 
 const deleteDepartmentValidation=[

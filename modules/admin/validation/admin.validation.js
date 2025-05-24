@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const admin_id=param('admin_id').isInt().withMessage('Admin ID is must be valid')
+    .bail()
     .custom(async(val)=>{
         try{
           const ad_id=await db('admins').where('admin_id',val).first();
@@ -18,9 +19,11 @@ const admin_id=param('admin_id').isInt().withMessage('Admin ID is must be valid'
         }
     })
 
-const admin_name=body('admin_name').isString();
+const admin_name=()=>body('admin_name').isString();
 
-const admin_username=body('admin_username').isString()
+const admin_username=()=>body('admin_username').isString()
+    .notEmpty().withMessage('Admin username is required')
+    .bail()
     .custom(async(val,{req})=>{
         const user = await db('admins')
             .where('admin_username', val)
@@ -31,9 +34,11 @@ const admin_username=body('admin_username').isString()
         return true;
     });
 
-const admin_email = body('admin_email')
+const admin_email =()=> body('admin_email')
     .notEmpty().withMessage('Admin email is required')
+    .bail()
     .isEmail().withMessage('Email is not valid')
+    .bail()
     .custom(async (val, { req }) => {
         const email = val.toLowerCase();
         const user = await db('admins')
@@ -49,6 +54,7 @@ const admin_email = body('admin_email')
     });
 
 const admin_password=body('admin_password','Student passwords are required').notEmpty()
+    .bail()
     .custom(async(val)=>{
         if(val && val.length<6){
             return Promise.reject('The password should be greater then 6 character');
@@ -68,6 +74,7 @@ const new_password=body('new_password','New passwords are required')
     })
 
 const student_id=body('student_id').notEmpty().withMessage('Student ID is required')
+    .bail()
     .custom(async(val)=>{
         const s_id=await db('students').where('student_id',val).first();
         if(!s_id){
@@ -77,8 +84,9 @@ const student_id=body('student_id').notEmpty().withMessage('Student ID is requir
     });
 
 const department_id=body('department_id').notEmpty().withMessage('Department is required')
+    .bail()
     .custom(async(val)=>{
-        const d_id=await db('departments').where('department_id',val).first();
+        const d_id=await db('departments').where('departments_id',val).first();
         if(!d_id){
             return Promise.reject('Department not found');
         }
@@ -95,7 +103,9 @@ const deleteAdminValidation=[
 ]
 
 const updateAdminValidation=[
-    admin_name,admin_email.optional(),admin_username.optional()
+    admin_name().optional(),
+    admin_email().optional(),
+    admin_username().optional()
 ]
 const getAdminsValidation=[
     query('id').optional().isInt().withMessage('ID must be an integer'),

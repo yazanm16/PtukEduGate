@@ -22,8 +22,12 @@ const listCollege=async (filters={})=>{
     return await query.select('*');
 }
 
+const updateCollege=async(college_id,data)=>{
+    return await db('colleges').where('college_id',college_id).update(data);
+}
 module.exports={
     createCollege,
     deleteCollege,
-    listCollege
+    listCollege,
+    updateCollege
 }

@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const upload_id=param('upload_id').isInt().withMessage('the upload_id is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const ap_id=await db('upload').where({upload_id:value}).first();
@@ -19,6 +20,7 @@ const upload_id=param('upload_id').isInt().withMessage('the upload_id is require
     })
 
 const student_id=body('student_id').isInt().withMessage('the student id is required')
+    .bail()
     .custom(async(val)=>{
         try {
             const s_id=await db('students').where('student_id',val).first();
@@ -34,6 +36,7 @@ const student_id=body('student_id').isInt().withMessage('the student id is requi
     })
 
 const admin_id=body('admin_id').isInt().withMessage('Admin ID is must be valid')
+    .bail()
     .custom(async(val)=>{
         try{
             const ad_id=await db('admins').where('admin_id',val).first();
@@ -49,6 +52,7 @@ const admin_id=body('admin_id').isInt().withMessage('Admin ID is must be valid')
     })
 
 const course_id=body('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -63,7 +67,7 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
         }
     })
 
-const uploaded_type=body('uploaded_type').notEmpty().withMessage('The uploaded type is required')
+const uploaded_type=body('uploaded_type').notEmpty().withMessage('The uploaded type is required').bail()
     .isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid upload type');
 
 const upload_name = body('upload_name')

@@ -6,6 +6,7 @@ const {updateCourse} = require("../service/course.service");
 const db = knex(knexConfig);
 
 const course_id=param('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -20,17 +21,17 @@ const course_id=param('course_id').isInt().withMessage('The course ID is require
         }
     })
 
-const course_name=body('course_name').notEmpty().withMessage('The course name is required');
+const course_name=()=>body('course_name').notEmpty().withMessage('The course name is required');
 
 const course_note=body('course_note').optional().isString().withMessage('Course note must be a string');
 
 
 const createCourseValidation=[
-    course_name,course_note
+    course_name(),course_note
 ]
 const updateCourseValidation=[
     course_id,
-    body('course_name').optional().isString().withMessage('Course name must be a string'),
+    course_name().optional(),
     course_note
 ]
 const deleteCourseValidation=[

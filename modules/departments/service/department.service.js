@@ -2,8 +2,8 @@ const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
-const createDepartment=async (departments_name,college_id)=>{
-    await db('departments').insert(departments_name,college_id);
+const createDepartment=async ({departments_name, college_id})=>{
+    await db('departments').insert({departments_name, college_id});
 }
 
 const DepartmentList=async (filters={})=>{

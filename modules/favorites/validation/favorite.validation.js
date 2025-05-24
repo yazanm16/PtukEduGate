@@ -4,6 +4,7 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const content_id = body('content_id').isInt().withMessage('Content ID must be an integer')
+    .bail()
     .custom(async (val, { req }) => {
         const type = req.body.content_type;
         const tableMap = {
@@ -11,8 +12,7 @@ const content_id = body('content_id').isInt().withMessage('Content ID must be an
             exam: 'exams',
             slide: 'slides',
             summary: 'summaries',
-            video: 'videos',
-            course:'courses'
+            video: 'videos'
         };
         const table = tableMap[type];
         if (!table) throw new Error('Invalid content type');
@@ -21,10 +21,11 @@ const content_id = body('content_id').isInt().withMessage('Content ID must be an
         return true;
     });
 
-const content_type = body('content_type').isIn(['book', 'exam', 'slide', 'summary', 'video','course'])
+const content_type = body('content_type').isIn(['book', 'exam', 'slide', 'summary', 'video'])
     .withMessage('Invalid content type');
 
 const favorite_id = param('favorite_id').isInt().withMessage('Favorite ID must be an integer')
+    .bail()
     .custom(async (value) => {
         try {
             const f_id=await db('favorites').where('id',value).first();

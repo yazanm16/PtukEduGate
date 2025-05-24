@@ -7,7 +7,7 @@ const db = knex(knexConfig);
 const createDepartmentByPost = async (req, res) => {
     try {
         const{departments_name,college_id}=req.body;
-        const result=await createDepartment(departments_name,college_id);
+        const result=await createDepartment({departments_name, college_id});
         return res.status(200).json({
             success:true,
             message:"Successfully created department"
@@ -15,7 +15,7 @@ const createDepartmentByPost = async (req, res) => {
     }catch(err) {
         console.log(err);
         return res.status(500).json({
-            success:true,
+            success:false,
             message:'something went wrong'
         })
     }

@@ -58,7 +58,8 @@ const approveUploaded=async(uploadId,adminId)=>{
         admin_id:adminId,
         doctor_name:upload.doctor_name,
         [`${table.slice(0, -1)}_name`]: upload.upload_name,
-        [`${table.slice(0, -1)}_path`]: upload.upload_url
+        [`${table.slice(0, -1)}_path`]: upload.upload_url,
+        description:upload.description,
     }
     await db(table).insert(uploaded);
     await db('upload').where('upload_id',uploadId).update({uploaded_state: 'approved',admin_id:adminId});

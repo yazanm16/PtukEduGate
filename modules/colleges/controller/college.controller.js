@@ -1,4 +1,4 @@
-const {createCollege, deleteCollege, listCollege}=require('../service/college.service')
+const {createCollege, deleteCollege, listCollege,updateCollege}=require('../service/college.service')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 
@@ -67,8 +67,33 @@ const getCollegesByGet=async(req,res)=>{
     }
 
 }
+
+const updateCollegeByPut=async(req,res)=>{
+    try {
+        const {college_id}=req.params;
+        const{college_name}=req.body;
+        const result=await updateCollege(college_id,college_name);
+        if(result===0){
+            return res.status(404).json({
+                success:false,
+                message:"college not found"
+            })
+        }
+        return res.status(200).json({
+            success:true,
+            message:"college updated successfully",
+        })
+    }catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"Something went wrong"
+        })
+    }
+}
 module.exports={
     createCollegeByPost,
     deleteCollegeByDelete,
-    getCollegesByGet
+    getCollegesByGet,
+    updateCollegeByPut
 }

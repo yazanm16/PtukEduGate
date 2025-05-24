@@ -5,6 +5,7 @@ const db = knex(knexConfig);
 
 
 const dc_id=param('dc_id').isInt().withMessage('The department course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const dc_id=await db('departments_courses').where({dc_id:value}).first();
@@ -19,7 +20,8 @@ const dc_id=param('dc_id').isInt().withMessage('The department course ID is requ
             return Promise.reject("Department Course not found.");
         }
     })
-const course_id=body('course_id').isInt().withMessage('The course ID is required')
+const course_id=()=>body('course_id').isInt().withMessage('The course ID is required')
+    .bail()
     .custom(async(value)=>{
         try {
             const c_id=await db('courses').where({course_id:value}).first();
@@ -34,7 +36,8 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
         }
     })
 
-const departments_id=body('departments_id').isInt().withMessage('Department ID is must be valid')
+const departments_id=()=>body('departments_id').isInt().withMessage('Department ID is must be valid')
+    .bail()
     .custom(async(val)=>{
         try {
             const d_id=await db('departments').where('departments_id',val).first();
@@ -49,13 +52,13 @@ const departments_id=body('departments_id').isInt().withMessage('Department ID i
         }
     })
 
-const dc_type=body('dc_type').notEmpty().withMessage('Department Type is required')
+const dc_type=()=>body('dc_type').notEmpty().withMessage('Department Type is required')
 
 
 const linkDepartmentWithCourseValidation=[
-    course_id,
-    departments_id,
-    dc_type
+    course_id(),
+    departments_id(),
+    dc_type()
 ]
 
 const getDepartmentCoursesValidation=[
@@ -64,9 +67,9 @@ const getDepartmentCoursesValidation=[
 ]
 const updateDepartmentCourseValidation=[
     dc_id,
-    body('course_id').optional().isInt().withMessage('Course ID must be an integer'),
-    body('departments_id').optional().isInt().withMessage('Department ID must be an integer'),
-    body('dc_type').optional().notEmpty().withMessage('dc_type must not be empty')
+    course_id().optional(),
+    departments_id().optional(),
+    dc_type().optional()
 ]
 const deleteDepartmentCourseValidation=[
     dc_id
