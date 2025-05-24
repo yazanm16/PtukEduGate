@@ -9,25 +9,27 @@ const studentCreate = async (
     student_email,
     student_password
 ) => {
-    try {
+
 
         const salt = await bcrypt.genSalt(10);
 
         const hashedPassword = await bcrypt.hash(student_password, salt);
 
 
-        await db('students').insert({
+        const[student_id]= await db('students').insert({
             student_name: student_name,
             student_username: student_username,
             student_email: student_email,
             student_password: hashedPassword
         });
+        return {
+            id:student_id,
+            name:student_name,
+            username:student_username,
+            email:student_email,
+        }
 
-        return "The student was added successfully";
-    } catch (err) {
-        console.error(err);
-        return "Failed to add the student";
-    }
+
 };
 
 const studentList=async (filters={})=>{

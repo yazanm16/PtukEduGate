@@ -4,15 +4,31 @@ const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const e = require("express");
+const jwt=require('jsonwebtoken');
 const db = knex(knexConfig);
 
 const studentCreateByPost=async (req, res) => {
 try {
     const {student_name,student_username,student_email,student_password}=req.body;
-    const result=await studentCreate(student_name,student_username,student_email,student_password);
+    const student=await studentCreate(student_name,student_username,student_email,student_password);
+    const token=jwt.sign({
+        id:student.id,
+        email:student.email,
+        role:'student'
+    },
+        process.env.JWT_SECRET,
+        {
+            expiresIn:'6h'
+        }
+    )
     return res.status(201).json({
         status:true,
-        data:result
+        message:'Student created successfully',
+        data:{
+            token,
+            role:'student',
+            user:student,
+        }
     });
 }catch(err){
     console.log(err);
