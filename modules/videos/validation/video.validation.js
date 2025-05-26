@@ -19,9 +19,7 @@ const video_id=param('video_id').isInt().withMessage('Video id must be an intege
         }
     })
 
-const video_name =()=> body('video_name').notEmpty().withMessage('The Video name is required')
-    .bail()
-.isString().withMessage('The Video name must be a string')
+const video_name =()=> body('video_name').isString().withMessage('The Video name must be a string')
 
 const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })

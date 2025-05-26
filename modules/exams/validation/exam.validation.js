@@ -20,9 +20,7 @@ const exam_id=param('exam_id').isInt().withMessage('exam_id must be an integer')
     })
 
 
-const exam_name =()=>body('exam_name').notEmpty().withMessage('The exam name is required')
-    .bail()
-    .isString().withMessage('The exam name must be a string')
+const exam_name =()=>body('exam_name').isString().withMessage('The exam name must be a string')
 
 const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })

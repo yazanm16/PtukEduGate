@@ -19,9 +19,7 @@ const summary_id=param('summary_id').isInt().withMessage('summary id must be an 
         }
     })
 
-const summary_name =()=> body('summary_name').notEmpty().withMessage('The summary name is required')
-    .bail()
-.isString().withMessage('The Summary name must be a string')
+const summary_name =()=> body('summary_name').isString().withMessage('The Summary name must be a string')
 
 const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })
@@ -48,7 +46,7 @@ const description = body('description')
     .isString().withMessage('Description must be text');
 
 const createSummaryValidation=[
-    summary_name(),
+    summary_name().optional(),
     doctor_name(),
     course_id,
     description

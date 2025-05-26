@@ -20,9 +20,7 @@ const book_id=param('book_id').isInt().withMessage('book_id must be an integer')
     })
 
 
-const book_name =()=> body('book_name').notEmpty().withMessage('The book name is required')
-    .bail()
-    .isString().withMessage('The book name must be a string')
+const book_name =()=> body('book_name').isString().withMessage('The book name must be a string')
 
 const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })

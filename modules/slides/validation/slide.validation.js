@@ -19,9 +19,7 @@ const slide_id=param('slide_id').isInt().withMessage('slide_id must be an intege
         }
     })
 
-const slide_name =()=> body('slide_name').notEmpty().withMessage('The slide name is required')
-    .bail()
-.isString().withMessage('The slide name must be a string')
+const slide_name =()=> body('slide_name').isString().withMessage('The slide name must be a string')
 
 const doctor_name =()=> body('doctor_name')
     .optional({ nullable: true })
