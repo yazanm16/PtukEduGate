@@ -46,7 +46,7 @@ const description = body('description')
     .isString().withMessage('Description must be text');
 
 const createVideoValidation=[
-    video_name(),
+    video_name().optional(),
     doctor_name(),
     course_id,
     description

@@ -46,7 +46,7 @@ const description = body('description')
     .isString().withMessage('Description must be text');
 
 const createSlideValidation=[
-    slide_name(),
+    slide_name().optional(),
     doctor_name(),
     course_id,
     description

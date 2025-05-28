@@ -47,7 +47,7 @@ const description = body('description')
     .isString().withMessage('Description must be text');
 
 const createExamValidation=[
-    exam_name(),
+    exam_name().optional(),
     doctor_name(),
     course_id,
     description

@@ -47,7 +47,7 @@ const description = body('description')
     .isString().withMessage('Description must be text');
 
 const createBookValidation=[
-    book_name(),
+    book_name().optional(),
     doctor_name(),
     description,
     course_id
