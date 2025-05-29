@@ -50,8 +50,15 @@ const getStudentProfile=async(studentId)=>{
 }
 
 const deleteStudent=async(studentId)=>{
+    const reasons=[]
+    const existAdmin=await db('admins').where('student_id',studentId).first();
+    if(existAdmin)reasons.push("student has admin, can't delete");
+    if (reasons.length > 0) {
+        return { status: 'blocked', reasons };
+    }
     const deleted = await db('students').where('student_id',studentId).del();
-    return deleted;
+    if(deleted===0) return {status:'not_found'};
+
 }
 
 const updateStudent=async(studentId,data)=>{

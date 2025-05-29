@@ -30,7 +30,24 @@ const updateCourse=async(course_id,data)=>{
 }
 
 const deleteCourse=async(course_id)=>{
-    return await db('courses').where('course_id',course_id).delete();
+    const reasons=[]
+    const existBook=await db('books').where('course_id',course_id).first();
+    if(existBook) reasons.push("can't delete course because there is a book connected to it") ;
+    const existExam=await db('exams').where('course_id',course_id).first();
+    if(existExam) reasons.push("can't delete course because there is an exam connected to it") ;
+    const existSlides=await db('slides').where('course_id',course_id).first();
+    if(existSlides) reasons.push("can't delete course because there is a slides connected to it") ;
+    const existVideo=await db('videos').where('course_id',course_id).first();
+    if(existVideo) reasons.push("can't delete course because there is a video connected to it") ;
+    const existSummary=await db('summaries').where('course_id',course_id).first();
+    if(existSummary) reasons.push("can't delete course because there is a summary connected to it") ;
+    const existUpload=await db('upload').where('course_id',course_id).first();
+    if(existUpload) reasons.push("can't delete course because there is a upload connected to it") ;
+    if (reasons.length > 0) {
+        return { status: 'blocked', reasons };
+    }
+    const deleted= await db('courses').where('course_id',course_id).delete();
+    return deleted===0 ?{status:'not_found'} : {status:'deleted'}
 }
 
 

@@ -83,10 +83,16 @@ const deleteDepartmentByDelete = async (req, res) => {
     try{
         const {departments_id} = req.params;
         const result=await deleteDepartment(departments_id);
-        if(result===0){
-            res.status(404).json({
+        if(result.status==='not_found'){
+           return  res.status(404).json({
                 success:false,
-                message:"Department not found."
+                message:"Department not found"
+            })
+        }
+        if(result.status==='blocked'){
+           return res.status(400).json({
+                success:false,
+                message:result.reasons
             })
         }
         return res.status(200).json({

@@ -11,7 +11,14 @@ const createCollege=async(college_name)=>{
 }
 
 const deleteCollege=async(college_id)=>{
-     return await db('colleges').where('college_id',college_id).delete();
+    const reasons=[]
+    const existDepartment=await db('departments').where('college_id',college_id).first();
+    if(existDepartment)reasons.push("college has departments, can't delete");
+    if (reasons.length > 0) {
+        return { status: 'blocked', reasons };
+    }
+     const deleted= await db('colleges').where('college_id',college_id).delete();
+        return deleted===0 ?{status:'not_found'} : {status:'deleted'}
 }
 
 const listCollege=async (filters={})=>{
@@ -22,8 +29,10 @@ const listCollege=async (filters={})=>{
     return await query.select('*');
 }
 
-const updateCollege=async(college_id,data)=>{
-    return await db('colleges').where('college_id',college_id).update(data);
+const updateCollege=async(college_id,college_name)=>{
+    return await db('colleges').where('college_id',college_id).update({
+        college_name:college_name,
+    });
 }
 module.exports={
     createCollege,

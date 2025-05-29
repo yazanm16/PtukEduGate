@@ -20,7 +20,16 @@ const updateDepartment=async (departments_id,data)=>{
 }
 
 const deleteDepartment=async(departments_id)=>{
-    return await db('departments').where('departments_id',departments_id).delete();
+    const reasons=[]
+    const existAdmin=await db('admins').where('department_id',departments_id).first();
+    if(existAdmin) reasons.push("can't delete department because there is an admin connected to it") ;
+    if (reasons.length > 0) {
+        return { status: 'blocked', reasons };
+    }
+    const deleted = await db('departments').where('departments_id',departments_id).delete();
+    return deleted===0 ?{status:'not_found'} : {status:'deleted'}
+
+
 }
 module.exports={
     createDepartment,

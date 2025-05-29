@@ -92,10 +92,16 @@ const deleteStudentByDelete=async (req, res) => {
     try{
         const {student_id}=req.params;
         const result=await deleteStudent(student_id);
-        if (!result){
+        if (result.status==='not_found'){
             res.status(404).json({
                 success:false,
                 message:"Student not found"
+            })
+        }
+        if (result.status==='blocked'){
+            return res.status(400).json({
+                success:true,
+                message:result.reasons
             })
         }
         res.status(200).json({

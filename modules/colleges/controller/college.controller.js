@@ -23,16 +23,22 @@ const createCollegeByPost=async(req,res)=>{
 const deleteCollegeByDelete=async(req,res)=>{
     const {college_id}=req.params;
     try {
-        const result=await deleteCollege(college_id);
-        if(result===0){
+        const result = await deleteCollege(college_id);
+        if (result.status === 'not_found') {
             return res.status(404).json({
-                success:false,
-                message:"college not found"
+                success: false,
+                message: "college not found"
+            })
+        }
+        if (result.status === 'blocked') {
+            return res.status(400).json({
+                success: false,
+                message: result.reasons
             })
         }
         return res.status(200).json({
-            success:true,
-            message:"college deleted successfully",
+            success: true,
+            message: "college deleted successfully"
         })
     }
     catch (err) {
