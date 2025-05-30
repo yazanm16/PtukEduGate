@@ -22,7 +22,7 @@ const videoRouter=require('./modules/videos/routes/video.routes');
 const studentCourseRouter=require('./modules/students_courses/routes/sc.router');
 const downloadRouter=require('./modules/download/routes/download.routes');
 const noteRouter=require('./modules/notes/routes/note.router');
-
+const contactUsRouter=require('./modules/contact_messages/routes/contact.router');
 var app = express();
 app.use(cors());
 
@@ -56,6 +56,7 @@ app.use('',videoRouter);
 app.use('',studentCourseRouter);
 app.use('',downloadRouter);
 app.use('',noteRouter);
+app.use('',contactUsRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
