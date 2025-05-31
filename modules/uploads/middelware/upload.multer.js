@@ -2,7 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const allowedTypes = ['book', 'exam', 'slide', 'summary', 'video'];
+const allowedTypes = ['book', 'exam', 'slide', 'summary', 'video','assignment'];
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
         cb(null, folder);
     },
     filename: function (req, file, cb) {
-       // console.log("File received:", file.originalname);
         const uniqueName = Date.now() + '_' + file.originalname;
         cb(null, uniqueName);
     }

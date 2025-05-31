@@ -46,6 +46,7 @@ const approveUploaded=async(uploadId,adminId)=>{
         slide:'slides',
         summary:'summaries',
         video:'videos',
+        assignment:'assignments'
     }
     const table=insertData[upload.uploaded_type];
     if(!table) throw new Error('Unsupported uploaded type')

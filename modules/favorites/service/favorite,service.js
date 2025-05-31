@@ -19,7 +19,8 @@ const listFavorites = async (student_id) => {
         slide: 'slides',
         summary: 'summaries',
         video: 'videos',
-        course:'courses'
+        course:'courses',
+        assignment:'assignments'
     };
 
     const results = [];

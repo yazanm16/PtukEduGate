@@ -6,7 +6,7 @@ const db = knex(knexConfig);
 const content_type = body('content_type')
     .notEmpty().withMessage('Content type is required')
     .bail()
-    .isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid content type');
+    .isIn(['book', 'exam', 'slide', 'summary', 'video','assignment']).withMessage('Invalid content type');
 
 const content_id = body('content_id').isInt().withMessage('Content ID must be an integer')
     .bail()
@@ -17,7 +17,8 @@ const content_id = body('content_id').isInt().withMessage('Content ID must be an
             exam: 'exams',
             slide: 'slides',
             summary: 'summaries',
-            video: 'videos'
+            video: 'videos',
+            assignment:'assignments'
         };
         const table = tableMap[type];
         if (!table) throw new Error('Invalid content type');

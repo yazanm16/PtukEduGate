@@ -68,7 +68,7 @@ const course_id=body('course_id').isInt().withMessage('The course ID is required
     })
 
 const uploaded_type=body('uploaded_type').notEmpty().withMessage('The uploaded type is required').bail()
-    .isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid upload type');
+    .isIn(['book', 'exam', 'slide', 'summary', 'video','assignment']).withMessage('Invalid upload type');
 
 const upload_name = body('upload_name')
     .optional({ nullable: true })
@@ -101,7 +101,7 @@ const getUploadValidation=[
     query('course_id').optional().isInt().withMessage('ID must be an integer'),
     query('admin_id').optional().isInt().withMessage('ID must be an integer'),
     query('uploaded_state').optional().isIn(['pending','approved','rejected']).withMessage('Invalid upload state'),
-    query('uploaded_type').optional().isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid upload type'),
+    query('uploaded_type').optional().isIn(['book', 'exam', 'slide', 'summary', 'video','assignment']).withMessage('Invalid upload type'),
     query('upload_name').optional().isString().trim(),
     query('doctor_name').optional().isString().trim()
 ]
@@ -111,7 +111,7 @@ const approveUploadValidation=[
 
 const getUploadsStudent=[
     query('uploaded_state').optional().isIn(['pending','approved','rejected']).withMessage('Invalid upload state'),
-    query('uploaded_type').optional().isIn(['book', 'exam', 'slide', 'summary', 'video']).withMessage('Invalid upload type'),
+    query('uploaded_type').optional().isIn(['book', 'exam', 'slide', 'summary', 'video','assignment']).withMessage('Invalid upload type'),
     query('course_id').optional().isInt().withMessage('ID must be an integer'),
 
 

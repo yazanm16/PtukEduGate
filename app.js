@@ -23,6 +23,7 @@ const studentCourseRouter=require('./modules/students_courses/routes/sc.router')
 const downloadRouter=require('./modules/download/routes/download.routes');
 const noteRouter=require('./modules/notes/routes/note.router');
 const contactUsRouter=require('./modules/contact_messages/routes/contact.router');
+const assignmentRouter=require('./modules/assignments/routes/assignment.router');
 var app = express();
 app.use(cors());
 
@@ -57,6 +58,7 @@ app.use('',studentCourseRouter);
 app.use('',downloadRouter);
 app.use('',noteRouter);
 app.use('',contactUsRouter);
+app.use('',assignmentRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
