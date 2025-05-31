@@ -10,7 +10,7 @@ const {createDepartmentByPost, getDepartmentsByGet, updateDepartmentByPut, delet
 
 router.post('/admin/department-create',Authenticated,authorizeRoles('superadmin'),createDepartmentValidation,validate,createDepartmentByPost)
 
-router.get('/department-list',Authenticated,getDepartmentsValidation,validate,getDepartmentsByGet)
+router.get('/department-list',getDepartmentsValidation,validate,getDepartmentsByGet)
 
 router.put('/admin/department-update/:departments_id',Authenticated,authorizeRoles('superadmin'),updateDepartmentValidation,validate,updateDepartmentByPut)
 
