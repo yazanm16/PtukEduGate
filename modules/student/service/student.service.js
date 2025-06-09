@@ -22,11 +22,13 @@ const studentCreate = async (
             student_email: student_email,
             student_password: hashedPassword
         });
+        const student= await db('students').where({student_id}).first()
         return {
-            id:student_id,
-            name:student_name,
-            username:student_username,
-            email:student_email,
+            id:student.student_id,
+            name:student.student_name,
+            username:student.student_username,
+            email:student.student_email,
+            date_of_register:student.date_of_register
         }
 
 

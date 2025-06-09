@@ -65,6 +65,7 @@ const login=async (emailOrUsername, password,rememberMe =false)=>{
             email:user.admin_email||user.student_email,
             username:user.admin_username||user.student_username,
             name:user.admin_name||user.student_name,
+            date_of_register:user.date_of_register
         }
     };
 };
