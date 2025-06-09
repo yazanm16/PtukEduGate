@@ -20,9 +20,9 @@ router.delete('/admins-delete/:admin_id',Authenticated,authorizeRoles('superadmi
 
 router.put('/admin/update-profile',Authenticated,authorizeRoles('admin','superadmin'),updateAdminValidation,validate,updateAdminByPut)
 
-router.get('admin-profile',Authenticated,authorizeRoles('admin','superadmin'),getAdminProfileByGet)
+router.get('/admin-profile',Authenticated,authorizeRoles('admin','superadmin'),getAdminProfileByGet)
 
-router.put('admin/change-password',Authenticated,authorizeRoles('admin','superadmin'),changeAdminPasswordValidation,validate,changeAdminPasswordByPut)
+router.put('/admin/change-password',Authenticated,authorizeRoles('admin','superadmin'),changeAdminPasswordValidation,validate,changeAdminPasswordByPut)
 
 router.put('/admin/change-department',Authenticated,authorizeRoles('superadimn'),updateAdminDepartmentValidation,validate,updateDepartmentsAdminByPut)
 
