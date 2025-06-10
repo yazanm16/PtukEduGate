@@ -28,7 +28,8 @@ const studentCreate = async (
             name:student.student_name,
             username:student.student_username,
             email:student.student_email,
-            date_of_register:student.date_of_register
+            date_of_register:student.date_of_register,
+            role:'student',
         }
 
 
