@@ -18,7 +18,8 @@ const listDepartmentsCourses=async (filters={})=>{
             'c.course_id',
             'c.course_name',
             'c.course_note',
-            'dc.dc_type'
+            'dc.dc_type',
+                    'dc.dc_id'
         )
         .where('dc.department_id', filters.department_id);
 
