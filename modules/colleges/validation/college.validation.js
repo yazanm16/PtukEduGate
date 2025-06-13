@@ -23,7 +23,7 @@ const college_id=param('college_id').isInt().withMessage('The college ID is requ
 const college_name=()=>body('college_name').notEmpty().withMessage('The college name is required');
 
 const createCollegeValidation=[
-    college_name
+    college_name()
 ]
 const deleteCollegeValidation=[
     college_id

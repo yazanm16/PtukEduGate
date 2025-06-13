@@ -6,7 +6,7 @@ const knexConfig = require('../../../knexfile');
 const createCollegeByPost=async(req,res)=>{
     try {
         const {college_name}=req.body;
-        const result=createCollege(college_name);
+        await createCollege(college_name);
         return res.status(201).json({
             success:true,
             message:"college created successfully",
