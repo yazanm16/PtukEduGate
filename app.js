@@ -24,6 +24,7 @@ const downloadRouter=require('./modules/download/routes/download.routes');
 const noteRouter=require('./modules/notes/routes/note.router');
 const contactUsRouter=require('./modules/contact_messages/routes/contact.router');
 const assignmentRouter=require('./modules/assignments/routes/assignment.router');
+const archiveRouter=require('./modules/archive/routes/archive.router');
 var app = express();
 app.use(cors());
 
@@ -59,6 +60,7 @@ app.use('',downloadRouter);
 app.use('',noteRouter);
 app.use('',contactUsRouter);
 app.use('',assignmentRouter);
+app.use('',archiveRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -9,7 +9,7 @@ const createBookByPost=async(req,res)=>{
     }
     try {
         const admin_id = req.user.id;
-        const book_path = `${req.protocol}://${req.get('host')}/uploads/book/${req.file.filename}`;
+        const book_path = `uploads/book/${req.file.filename}`;
         const { book_name, course_id, doctor_name,description } = req.body;
         await createBook({ book_name, course_id, doctor_name, book_path, admin_id,description})
         return res.status(200).json({ success: true, message: 'Book created successfully' });
@@ -44,8 +44,9 @@ const getBookByGet=async(req,res)=>{
 
 const deleteBookByDelete=async(req,res)=>{
     try {
+        const admin_id = req.user.id;
         const bookId=req.params.book_id;
-        const result=await deleteBook(bookId);
+        const result=await deleteBook(bookId,admin_id);
         if(!result){
             return res.status(404).json({
                 success:false,
@@ -54,7 +55,7 @@ const deleteBookByDelete=async(req,res)=>{
         }
         return res.status(200).json({
             success:true,
-            message:"Book deleted successfully",
+            message:"Book deleted successfully,You can find it in archive table",
         })
     }catch (err) {
         console.log(err);

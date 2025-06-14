@@ -8,7 +8,7 @@ const createSummaryByPost=async (req,res)=>{
     }
     try{
         const admin_id=req.user.id;
-        const summary_path = `${req.protocol}://${req.get('host')}/uploads/summary/${req.file.filename}`;
+        const summary_path = `uploads/summary/${req.file.filename}`;
         const{summary_name,course_id,doctor_name,description}=req.body;
         await createSummary({summary_name, course_id, doctor_name, summary_path, admin_id,description});
         return res.status(200).json({success:true,message:"summary created successfully"});
@@ -44,8 +44,9 @@ const getSummaryByGet=async (req,res)=>{
 
 const deleteSummaryByDelete=async (req,res)=>{
     try {
+        const admin_id=req.user.id;
         const {summary_id}=req.params;
-        const result=await deleteSummary(summary_id);
+        const result=await deleteSummary(summary_id,admin_id);
         if(!result){
             return res.status(404).json({
                 success:false,
@@ -54,7 +55,7 @@ const deleteSummaryByDelete=async (req,res)=>{
         }
         return res.status(200).json({
             success:true,
-            message:"Summary deleted successfully",
+            message:"Summary deleted successfully,You can find it in archive table",
         })
     }catch (err) {
         console.log(err);

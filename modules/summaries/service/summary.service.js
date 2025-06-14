@@ -22,17 +22,39 @@ const getSummary=async (filters={})=>{
     return await query.select('*');
 }
 
-const deleteSummary=async(summary_id)=>{
-    const summary=await db('summaries').where('summary_id',summary_id).first();
-    if(!summary)return "summary not found";
-    const filePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'summary', path.basename(summary.summary_path));
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+const deleteSummary = async (summary_id, admin_id) => {
+    const summary = await db('summaries').where('summary_id', summary_id).first();
+    if (!summary) return "Summary not found";
+
+    if (!summary.summary_path || typeof summary.summary_path !== 'string') {
+        throw new Error("summary_path is null or invalid.");
     }
-    await db('favorites').where({content_type:'summary',content_id:summary_id}).delete();
-    await db('summaries').where('summary_id',summary_id).delete();
+    const fileName = path.basename(summary.summary_path);
+    const oldPath = path.join(__dirname, '..', '..', '..', 'public', summary.summary_path);
+    const archivePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'archive', 'summary', fileName);
+
+    await db('favorites').where({ content_type: 'summary', content_id: summary_id }).delete();
+
+    if (fs.existsSync(oldPath)) {
+        fs.mkdirSync(path.dirname(archivePath), { recursive: true });
+        fs.renameSync(oldPath, archivePath);
+    } else {
+        console.warn("⚠️ الملف غير موجود في:", oldPath);
+    }
+
+    await db('archives').insert({
+        content_id: summary_id,
+        content_type: 'summary',
+        file_path: `archive/summary/${fileName}`,
+        deleted_by: admin_id,
+        original_data: JSON.stringify(summary)
+    });
+
+    await db('summaries').where('summary_id', summary_id).delete();
+
     return true;
-}
+};
+
 
 const updateSummary=async(summary_id,data)=>{
     return await db('summaries').where('summary_id',summary_id).update(data);

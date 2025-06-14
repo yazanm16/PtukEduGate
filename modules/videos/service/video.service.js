@@ -22,17 +22,39 @@ const getVideo=async (filters={})=>{
     return await query.select('*');
 }
 
-const deleteVideo=async(video_id)=>{
-    const Video=await db('videos').where('video_id',video_id).first();
-    if(!Video)return "Video not found";
-    const filePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'video', path.basename(Video.video_path));
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+const deleteVideo = async (video_id, admin_id) => {
+    const video = await db('videos').where('video_id', video_id).first();
+    if (!video) return "Video not found";
+
+    if (!video.video_path || typeof video.video_path !== 'string') {
+        throw new Error("video_path is null or invalid.");
     }
-    await db('favorites').where({content_type:'video',content_id:video_id}).delete();
-    await db('videos').where('video_id',video_id).delete();
+
+    const fileName = path.basename(video.video_path);
+    const oldPath = path.join(__dirname, '..', '..', '..', 'public', video.video_path);
+    const archivePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'archive', 'video', fileName);
+
+    await db('favorites').where({ content_type: 'video', content_id: video_id }).delete();
+
+    if (fs.existsSync(oldPath)) {
+        fs.mkdirSync(path.dirname(archivePath), { recursive: true });
+        fs.renameSync(oldPath, archivePath);
+    } else {
+        console.warn("⚠️ الملف غير موجود في:", oldPath);
+    }
+
+    await db('archives').insert({
+        content_id: video_id,
+        content_type: 'video',
+        file_path: `archive/video/${fileName}`,
+        deleted_by: admin_id,
+        original_data: JSON.stringify(video)
+    });
+
+    await db('videos').where('video_id', video_id).delete();
     return true;
-}
+};
+
 
 const updateVideo=async(video_id,data)=>{
     return await db('videos').where('video_id',video_id).update(data);

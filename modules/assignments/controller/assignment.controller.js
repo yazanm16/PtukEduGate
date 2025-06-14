@@ -9,7 +9,7 @@ const createAssignmentByPost=async(req,res)=>{
     }
     try {
         const admin_id = req.user.id;
-        const assignment_path = `${req.protocol}://${req.get('host')}/uploads/assignment/${req.file.filename}`;
+        const assignment_path = `uploads/assignment/${req.file.filename}`;
         const { assignment_name, course_id, doctor_name,description } = req.body;
         await createAssignment({ assignment_name, course_id, doctor_name, assignment_path, admin_id,description})
         return res.status(200).json({ success: true, message: 'Assignment created successfully' });
@@ -44,8 +44,9 @@ const getAssignmentByGet=async(req,res)=>{
 
 const deleteAssignmentByDelete=async(req,res)=>{
     try {
+        const admin_id = req.user.id;
         const assignmentId=req.params.assignment_id;
-        const result=await deleteAssignment(assignmentId);
+        const result=await deleteAssignment(assignmentId,admin_id);
         if(!result){
             return res.status(404).json({
                 success:false,

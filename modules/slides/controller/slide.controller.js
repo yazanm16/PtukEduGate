@@ -8,7 +8,7 @@ const createSlideByPost=async (req,res)=>{
     }
     try{
         const admin_id=req.user.id;
-        const slide_path = `${req.protocol}://${req.get('host')}/uploads/slide/${req.file.filename}`;
+        const slide_path = `uploads/slide/${req.file.filename}`;
         const{slide_name,course_id,doctor_name,description}=req.body;
         await createSlide({slide_name, course_id, doctor_name, slide_path, admin_id, description});
         return res.status(200).json({success:true,message:"slide created successfully"});
@@ -44,8 +44,9 @@ const getSlideByGet=async (req,res)=>{
 
 const deleteSlideByDelete=async (req,res)=>{
     try {
+        const admin_id=req.user.id;
         const {slide_id}=req.params;
-        const result=await deleteSlide(slide_id);
+        const result=await deleteSlide(slide_id,admin_id);
         if(!result){
             return res.status(404).json({
                 success:false,
@@ -54,7 +55,7 @@ const deleteSlideByDelete=async (req,res)=>{
         }
         return res.status(200).json({
             success:true,
-            message:"slide deleted successfully",
+            message:"slide deleted successfully,You can find it in archive table",
         })
     }catch (err) {
         console.log(err);

@@ -23,14 +23,31 @@ const getBook=async (filters={})=>{
     return await query.select('*');
 }
 
-const deleteBook=async(book_id)=>{
+const deleteBook=async(book_id,admin_id)=>{
     const book=await db('books').where('book_id',book_id).first();
     if(!book)return "book not found";
-    const filePath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'book', path.basename(book.book_path));
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+    if (!book.book_path || typeof book.book_path !== 'string') {
+        throw new Error("book_path is null or invalid.");
     }
+
+    const fileName=path.basename(book.book_path);
+    const oldPath = path.join(__dirname, '..', '..', '..', 'public',book.book_path);
+    const archivePath=path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'archive','book',fileName);
     await db('favorites').where({content_type:'book',content_id:book_id}).delete();
+
+    if (fs.existsSync(oldPath)) {
+        fs.mkdirSync(path.dirname(archivePath), { recursive: true });
+        fs.renameSync(oldPath, archivePath);
+    } else {
+        console.warn("⚠️ الملف غير موجود في المسار:", oldPath);
+    }
+    await db('archives').insert({
+        content_id:book_id,
+        content_type: 'book',
+        file_path: `archive/book/${fileName}`,
+        deleted_by:admin_id,
+        original_data: JSON.stringify(book)
+    })
     await db('books').where('book_id',book_id).delete();
     return true
 }

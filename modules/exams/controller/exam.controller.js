@@ -9,7 +9,7 @@ const createExamByPost=async(req,res)=>{
     }
     try {
         const admin_id = req.user.id;
-        const exam_path = `${req.protocol}://${req.get('host')}/uploads/exam/${req.file.filename}`;
+        const exam_path = `uploads/exam/${req.file.filename}`;
         const { exam_name, course_id, doctor_name,description } = req.body;
         await createExam({ exam_name, course_id, doctor_name, exam_path, admin_id,description})
         return res.status(200).json({ success: true, message: 'Exam created successfully' });
@@ -44,8 +44,9 @@ const getExamByGet=async(req,res)=>{
 
 const deleteExamByDelete=async(req,res)=>{
     try {
+        const admin_id = req.user.id;
         const examId=req.params.exam_id;
-        const result=await deleteExam(examId);
+        const result=await deleteExam(examId,admin_id);
         if(!result){
             return res.status(404).json({
                 success:false,
@@ -54,7 +55,7 @@ const deleteExamByDelete=async(req,res)=>{
         }
         return res.status(200).json({
             success:true,
-            message:"Exam deleted successfully",
+            message:"Exam deleted successfully,You can find it in archive table",
         })
     }catch (err) {
         console.log(err);

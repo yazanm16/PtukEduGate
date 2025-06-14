@@ -8,7 +8,7 @@ const createVideoByPost=async (req,res)=>{
     }
     try{
         const admin_id=req.user.id;
-        const video_path = `${req.protocol}://${req.get('host')}/uploads/video/${req.file.filename}`;
+        const video_path = `uploads/video/${req.file.filename}`;
         const{video_name,course_id,doctor_name,description}=req.body;
         await createVideo({video_name, course_id, doctor_name, video_path, admin_id,description});
         return res.status(200).json({success:true,message:"Video created successfully"});
@@ -44,8 +44,9 @@ const getVideoByGet=async (req,res)=>{
 
 const deleteVideoByDelete=async (req,res)=>{
     try {
+        const admin_id=req.user.id;
         const {video_id}=req.params;
-        const result=await deleteVideo(video_id);
+        const result=await deleteVideo(video_id,admin_id);
         if(!result){
             return res.status(404).json({
                 success:false,
@@ -54,7 +55,7 @@ const deleteVideoByDelete=async (req,res)=>{
         }
         return res.status(200).json({
             success:true,
-            message:"Video deleted successfully",
+            message:"Video deleted successfully,You can find it in archive table",
         })
     }catch (err) {
         console.log(err);

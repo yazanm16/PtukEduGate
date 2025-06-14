@@ -8,7 +8,7 @@ const {createUpload,uploadList,approveUploaded,rejectUploaded,getUploadStudent}=
 const createUploadByPost=async (req, res) => {
     try {
         const student_id=req.user.id;
-        const upload_url = `${req.protocol}://${req.get('host')}/uploads/${req.body.uploaded_type}/${req.file.filename}`;
+        const upload_url = `uploads/${req.body.uploaded_type}/${req.file.filename}`;
         const{course_id,uploaded_type,upload_name,doctor_name,description}=req.body;
         if(!req.file){
             return res.status(400).json({
