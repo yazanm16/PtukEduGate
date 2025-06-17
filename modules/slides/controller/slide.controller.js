@@ -69,10 +69,11 @@ const deleteSlideByDelete=async (req,res)=>{
 const updateSlideByPut = async (req, res) => {
     try{
         const {slide_id}=req.params;
-        const{slide_name,doctor_name}=req.body;
+        const{slide_name,doctor_name,description}=req.body;
         const updateData={}
         if (slide_name)updateData.slide_name=slide_name;
         if(doctor_name)updateData.doctor_name=doctor_name;
+        if(description)updateData.description=description;
 
         const result=await updateSlide(slide_id,updateData);
         if(!result){

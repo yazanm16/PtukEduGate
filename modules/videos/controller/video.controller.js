@@ -69,10 +69,11 @@ const deleteVideoByDelete=async (req,res)=>{
 const updateVideoByPut = async (req, res) => {
     try{
         const {video_id}=req.params;
-        const{video_name,doctor_name}=req.body;
+        const{video_name,doctor_name,description}=req.body;
         const updateData={}
         if (video_name)updateData.slide_name=video_name;
         if(doctor_name)updateData.doctor_name=doctor_name;
+        if (description)updateData.description=description;
 
         const result=await updateVideo(video_id,updateData);
         if(!result){

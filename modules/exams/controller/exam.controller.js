@@ -69,12 +69,12 @@ const deleteExamByDelete=async(req,res)=>{
 const updateExamByPut = async (req, res) => {
 
     const { exam_id } = req.params;
-    const { exam_name, doctor_name } = req.body;
+    const { exam_name, doctor_name,description } = req.body;
 
     const updateData = {};
     if (exam_name) updateData.exam_name = exam_name;
     if (doctor_name) updateData.doctor_name = doctor_name;
-
+    if(description)updateData.description = description;
     if (Object.keys(updateData).length === 0) {
         return res.status(400).json({ success: false, message: "No data to update." });
     }
