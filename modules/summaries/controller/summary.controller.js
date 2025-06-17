@@ -71,7 +71,7 @@ const updateSummaryByPut = async (req, res) => {
         const {summary_id}=req.params;
         const{summary_name,doctor_name,description}=req.body;
         const updateData={}
-        if (summary_name)updateData.slide_name=summary_name;
+        if (summary_name)updateData.summary_name=summary_name;
         if(doctor_name)updateData.doctor_name=doctor_name;
         if(description)updateData.description=description;
 
