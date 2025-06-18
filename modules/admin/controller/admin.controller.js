@@ -49,6 +49,13 @@ const adminsListByGet=async(req,res)=>{
 const deleteAdminByDelete=async(req,res)=>{
     try {
         const {admin_id}=req.params;
+        const id=req.user.id;
+        if(admin_id===id){
+            return res.status(403).json({
+                success: false,
+                message: "You cannot delete your own account."
+            });
+        }
         const result=await deleteAdmin(admin_id);
         res.status(200).json({
             success:true,
