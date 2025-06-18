@@ -69,12 +69,11 @@ const deleteAssignmentByDelete=async(req,res)=>{
 const updateAssignmentByPut = async (req, res) => {
 
     const { assignment_id } = req.params;
-    const { assignment_name, doctor_name } = req.body;
-
+    const { assignment_name, doctor_name ,description} = req.body;
     const updateData = {};
     if (assignment_name) updateData.assignment_name = assignment_name;
     if (doctor_name) updateData.doctor_name = doctor_name;
-
+    if(description) updateData.description = description;
     if (Object.keys(updateData).length === 0) {
         return res.status(400).json({ success: false, message: "No data to update." });
     }
