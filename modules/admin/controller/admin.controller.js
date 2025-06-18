@@ -50,20 +50,22 @@ const deleteAdminByDelete=async(req,res)=>{
     try {
         const {admin_id}=req.params;
         const id=req.user.id;
-        if(admin_id===id){
+
+
+        if(Number(admin_id)===Number(id)){
             return res.status(403).json({
                 success: false,
                 message: "You cannot delete your own account."
             });
         }
         const result=await deleteAdmin(admin_id);
-        res.status(200).json({
+       return res.status(200).json({
             success:true,
             message:result
         })
     }catch(err){
         console.error(err);
-        res.status(500).json({
+      return res.status(500).json({
             success:false,
             message:err.message
         })
