@@ -70,6 +70,7 @@ const updateAssignmentByPut = async (req, res) => {
 
     const { assignment_id } = req.params;
     const { assignment_name, doctor_name ,description} = req.body;
+    console.log(assignment_id)
     const updateData = {};
     if (assignment_name) updateData.assignment_name = assignment_name;
     if (doctor_name) updateData.doctor_name = doctor_name;

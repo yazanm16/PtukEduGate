@@ -57,8 +57,8 @@ const deleteAssignment = async (assignment_id, admin_id) => {
 };
 
 
-const updateAssignment=async(assignment_name,data)=>{
-    return await db('assignments').where('assignment_name',assignment_name).update(data);
+const updateAssignment=async(assignment_id,data)=>{
+    return await db('assignments').where('assignment_id',assignment_id).update(data);
 }
 
 module.exports={
