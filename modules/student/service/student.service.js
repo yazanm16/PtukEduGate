@@ -59,8 +59,9 @@ const deleteStudent=async(studentId)=>{
     if (reasons.length > 0) {
         return { status: 'blocked', reasons };
     }
-    const deleted = await db('students').where('student_id',studentId).del();
-    if(deleted===0) return {status:'not_found'};
+    const deleted = await db('students').where('student_id',studentId).delete();
+
+    return deleted===0 ? {status:'not_found'}:{status:'deleted'};
 
 }
 

@@ -104,7 +104,7 @@ const deleteStudentByDelete=async (req, res) => {
                 message:result.reasons
             })
         }
-        res.status(200).json({
+       return res.status(200).json({
             success:true,
             message:"Student deleted successfully"
         })
