@@ -24,7 +24,8 @@ const getStudentCourses=async(student_id)=>{
         result.push({
             SC_id:s.SC_id,
             course_id:s.course_id,
-            course_name:course.course_name
+            course_name:course.course_name,
+            course_note:course.course_note,
         })
     }
     return result;
