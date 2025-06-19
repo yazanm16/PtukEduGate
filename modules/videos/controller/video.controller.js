@@ -71,7 +71,7 @@ const updateVideoByPut = async (req, res) => {
         const {video_id}=req.params;
         const{video_name,doctor_name,description}=req.body;
         const updateData={}
-        if (video_name)updateData.slide_name=video_name;
+        if (video_name)updateData.video_name=video_name;
         if(doctor_name)updateData.doctor_name=doctor_name;
         if (description)updateData.description=description;
 
@@ -101,4 +101,3 @@ module.exports={
     deleteVideoByDelete,
     updateVideoByPut
 }
-
