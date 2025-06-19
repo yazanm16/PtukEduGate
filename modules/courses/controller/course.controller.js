@@ -53,7 +53,7 @@ const updateCourseByPut = async (req, res) => {
         const {course_name,course_note}=req.body;
         const data={};
         if(course_note) data.course_note=course_note;
-        if(course_name) data.course_name=course_note;
+        if(course_name) data.course_name=course_name;
         if(Object.keys(data).length===0){
             return res.status(400).json({
                 success:false,

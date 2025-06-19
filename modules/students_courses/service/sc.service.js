@@ -3,10 +3,11 @@ const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
 
 const createStudentCourse=async(student_id,course_id)=>{
-    await db('students_courses').insert({
+   const[SC_id]= await db('students_courses').insert({
         student_id,
         course_id
     })
+    return SC_id;
 }
 
 const deleteStudentCourse=async(SC_id,student_id)=>{

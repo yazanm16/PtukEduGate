@@ -32,7 +32,7 @@ const listFavorites = async (student_id) => {
 
         if (data) {
             results.push({
-                favorite_id: fav.favorite_id,
+                favorite_id: fav.id,
                 content_type: fav.content_type,
                 content_id: fav.content_id,
                 content_data: data
