@@ -16,6 +16,7 @@ try{
     return res.status(201).json({
         success:true,
         message:"Note added successfully",
+        data:result
     })
 }catch (err){
     console.log(err);
@@ -62,8 +63,8 @@ const listNotesByGet=async (req,res)=>{
             const admin = await db('admins').where({admin_id: req.user.id}).first();
             student_id = admin.student_id;
         }
-        const{content_id,content_type}=req.body;
-        const result=await listNote(student_id,content_id,content_type);
+        const filters=req.query;
+        const result=await listNote(student_id,filters);
         if(!result){
             return res.status(404).json({
                 success:false,

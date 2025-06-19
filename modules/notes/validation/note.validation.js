@@ -1,4 +1,4 @@
-const { body, param } = require('express-validator');
+const { body, param, query} = require('express-validator');
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const db = knex(knexConfig);
@@ -56,8 +56,23 @@ const note_title = body('note_title')
 const createNoteValidation = [content_type, content_id, note_text,note_title];
 const deleteNoteValidation = [note_id];
 const updateNoteValidation = [note_id, note_text,note_title];
+
+const noteListValidation = [
+    query('content_id')
+        .notEmpty().withMessage('content_id is required')
+        .isInt({ min: 1 }).withMessage('content_id must be a positive integer'),
+
+    query('content_type')
+        .notEmpty().withMessage('content_type is required')
+        .isIn(['book', 'exam', 'slide', 'summary', 'video','assignment'])
+        .withMessage('Invalid content_type')
+];
+
+
+
 module.exports = {
     createNoteValidation,
     deleteNoteValidation,
-    updateNoteValidation
+    updateNoteValidation,
+    noteListValidation
 };
