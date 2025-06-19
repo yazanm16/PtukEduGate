@@ -121,11 +121,16 @@ const updateAdminDepartmentValidation=[
     admin_id,
     department_id
 ]
+const updateAdminRoleValidation=[
+    admin_id,
+    role
+]
 module.exports={
     createAdminValidation,
     deleteAdminValidation,
     updateAdminValidation,
     getAdminsValidation,
     changeAdminPasswordValidation,
-    updateAdminDepartmentValidation
+    updateAdminDepartmentValidation,
+    updateAdminRoleValidation
 }

@@ -1,6 +1,6 @@
 const{validationResult}=require('express-validator')
 const bcrypt = require('bcryptjs');
-const{createAdmin,adminList,deleteAdmin,updateAdmin,adminProfile,changeAdminPass,updateDA}=require('../service/admin.service')
+const{createAdmin,adminList,deleteAdmin,updateAdmin,adminProfile,changeAdminPass,updateDA, updateRA}=require('../service/admin.service')
 const knex = require('knex');
 const knexConfig = require('../../../knexfile');
 const err = require("nodemailer/lib/mail-composer");
@@ -166,7 +166,7 @@ const updateDepartmentsAdminByPut=async(req,res)=>{
         }
         res.status(200).json({
             success:true,
-            message:result
+            message:"Change Departments Admin was updated successfully"
         })
     }catch (err) {
         console.error(err);
@@ -176,6 +176,38 @@ const updateDepartmentsAdminByPut=async(req,res)=>{
         })
     }
 }
+
+const updateRolesAdminByPut=async(req,res)=>{
+    try {
+        const {admin_id}=req.params;
+        const {role}=req.body;
+        const id=req.user.id;
+        if(Number(admin_id)===Number(id)){
+            return res.status(403).json({
+                success: false,
+                message: "You cannot Update your own role ."
+            });
+        }
+        const result=await updateRA(admin_id,role);
+        if (!result){
+            res.status(404).json({
+                success:false,
+                message:"Admin not found or no changes made"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            message:"Change Roles Admin was updated successfully"
+        })
+    }catch(err){
+        console.error(err);
+        res.status(500).json({
+            success:false,
+            message:err.message
+        })
+
+    }
+}
 module.exports = {
     createAdminByPost,
     adminsListByGet,
@@ -183,5 +215,6 @@ module.exports = {
     updateAdminByPut,
     getAdminProfileByGet,
     changeAdminPasswordByPut,
-    updateDepartmentsAdminByPut
+    updateDepartmentsAdminByPut,
+    updateRolesAdminByPut
 };

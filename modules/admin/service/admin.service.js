@@ -89,6 +89,9 @@ const changeAdminPass=async(admin_id,old_password,new_password)=>{
 const updateDA=async(admin_id,department_id)=>{
     return await db('admins').where({admin_id:admin_id}).update({department_id:department_id});
 }
+const updateRA=async(admin_id,role)=>{
+    return await db('admins').where({admin_id:admin_id}).update({role:role});
+}
 module.exports={
     createAdmin,
     adminList,
@@ -96,5 +99,6 @@ module.exports={
     updateAdmin,
     adminProfile,
     changeAdminPass,
-    updateDA
+    updateDA,
+    updateRA
 };
