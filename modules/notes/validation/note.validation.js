@@ -47,9 +47,15 @@ const note_id = param('note_id').isInt().withMessage('Note ID must be an integer
         }
     });
 
-const createNoteValidation = [content_type, content_id, note_text];
+const note_title = body('note_title')
+    .optional()
+    .bail()
+    .isLength({ min: 3, max: 100 })
+    .withMessage('Note title must be between 3 and 100 characters');
+
+const createNoteValidation = [content_type, content_id, note_text,note_title];
 const deleteNoteValidation = [note_id];
-const updateNoteValidation = [note_id, note_text];
+const updateNoteValidation = [note_id, note_text,note_title];
 module.exports = {
     createNoteValidation,
     deleteNoteValidation,

@@ -11,8 +11,8 @@ try{
         const admin = await db('admins').where({ admin_id: req.user.id }).first();
         student_id = admin.student_id;
     }
-    const {content_id,content_type,note_text}=req.body;
-    const result=await createNote(student_id,content_id,content_type,note_text);
+    const {content_id,content_type,note_text,note_title}=req.body;
+    const result=await createNote(student_id,content_id,content_type,note_text,note_title);
     return res.status(201).json({
         success:true,
         message:"Note added successfully",
@@ -91,8 +91,11 @@ const updateNoteByPut=async (req,res)=>{
             student_id = admin.student_id;
         }
         const {note_id}=req.params;
-        const {note_text}=req.body;
-        const result=await updateNote(note_id,note_text,student_id);
+        const {note_text,note_title}=req.body;
+        const updateData={}
+        if(note_text)updateData.note_text=note_text;
+        if(note_title)updateData.note_title=note_title;
+        const result=await updateNote(note_id,student_id,updateData);
         if(!result){
             return res.status(404).json({
                 success:false,
