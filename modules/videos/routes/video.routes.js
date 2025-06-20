@@ -10,7 +10,7 @@ const {createVideoByPost, getVideoByGet, deleteVideoByDelete, updateVideoByPut} 
 
 
 
-router.post('/admin/video-create',Authenticated,authorizeRoles('superadmin'),uploadVideo.single('file'),createVideoValidation,validate,createVideoByPost);
+router.post('/admin/video-create',Authenticated,authorizeRoles('admin','superadmin'),uploadVideo.single('file'),createVideoValidation,validate,createVideoByPost);
 
 router.get('/video',getVideoValidation,validate,getVideoByGet)
 

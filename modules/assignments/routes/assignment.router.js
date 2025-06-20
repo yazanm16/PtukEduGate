@@ -7,7 +7,7 @@ const uploadAssignment=require('../middelware/assignment.multer')
 const {createAssignmentValidation, getAssignmentValidation, deleteAssignmentValidation, updateAssignmentValidation} = require("../validation/assignment.validation");
 const {createAssignmentByPost, getAssignmentByGet, deleteAssignmentByDelete, updateAssignmentByPut} = require("../controller/assignment.controller");
 
-router.post('/admin/assignment-create',Authenticated,authorizeRoles('superadmin'),uploadAssignment.single('file'),createAssignmentValidation,validate,createAssignmentByPost);
+router.post('/admin/assignment-create',Authenticated,authorizeRoles('admin','superadmin'),uploadAssignment.single('file'),createAssignmentValidation,validate,createAssignmentByPost);
 
 router.get('/assignment',getAssignmentValidation,validate,getAssignmentByGet)
 

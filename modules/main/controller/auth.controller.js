@@ -40,8 +40,14 @@ const forgotPasswordByPost = async (req, res) => {
 
 const resetPasswordByPost = async (req, res) => {
     try {
-        const{token,newPassword}=req.body;
-        const result=await resetPassword(token,newPassword);
+        const{token,new_password,confirmPassword }=req.body;
+        if (new_password!==confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Passwords don't match",
+            })
+        }
+        const result=await resetPassword(token,new_password,confirmPassword );
         res.status(200).json({
             success: true,
             message: result

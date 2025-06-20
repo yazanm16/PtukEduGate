@@ -7,7 +7,7 @@ const {createBookByPost, getBookByGet, deleteBookByDelete, updateBookByPut} = re
 const {createBookValidation, getBooksValidation, deleteBookValidation, updateBookValidation} = require("../validation/book.validation");
 const uploadBook=require('../middelware/book.multer')
 
-router.post('/admin/book-create',Authenticated,authorizeRoles('superadmin'),uploadBook.single('file'),createBookValidation,validate,createBookByPost);
+router.post('/admin/book-create',Authenticated,authorizeRoles('admin','superadmin'),uploadBook.single('file'),createBookValidation,validate,createBookByPost);
 
 router.get('/book',getBooksValidation,validate,getBookByGet)
 

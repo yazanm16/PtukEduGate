@@ -9,7 +9,7 @@ const {createSlideByPost, getSlideByGet, deleteSlideByDelete, updateSlideByPut} 
 
 
 
-router.post('/admin/slide-create',Authenticated,authorizeRoles('superadmin'),uploadSlide.single('file'),createSlideValidation,validate,createSlideByPost);
+router.post('/admin/slide-create',Authenticated,authorizeRoles('admin','superadmin'),uploadSlide.single('file'),createSlideValidation,validate,createSlideByPost);
 
 router.get('/slide',getSlidesValidation,validate,getSlideByGet)
 

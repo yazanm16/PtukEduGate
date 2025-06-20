@@ -7,7 +7,7 @@ const {createExamByPost, getExamByGet, deleteExamByDelete,updateExamByPut} = req
 const {createExamValidation, getExamValidation, deleteExamValidation, updateExamValidation} = require("../validation/exam.validation");
 const uploadExam=require('../middelware/exam.multer')
 
-router.post('/admin/exam-create',Authenticated,authorizeRoles('superadmin'),uploadExam.single('file'),createExamValidation,validate,createExamByPost);
+router.post('/admin/exam-create',Authenticated,authorizeRoles('admin','superadmin'),uploadExam.single('file'),createExamValidation,validate,createExamByPost);
 
 router.get('/exam',getExamValidation,validate,getExamByGet)
 

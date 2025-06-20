@@ -10,7 +10,7 @@ const {createSummaryByPost, getSummaryByGet, deleteSummaryByDelete, updateSummar
 
 
 
-router.post('/admin/summary-create',Authenticated,authorizeRoles('superadmin'),uploadSummary.single('file'),createSummaryValidation,validate,createSummaryByPost);
+router.post('/admin/summary-create',Authenticated,authorizeRoles('admin','superadmin'),uploadSummary.single('file'),createSummaryValidation,validate,createSummaryByPost);
 
 router.get('/summary',getSummaryValidation,validate,getSummaryByGet)
 
