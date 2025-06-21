@@ -4,7 +4,7 @@ const db = knex(config);
 
 const checkUploadPermission = async (req, res, next) => {
     try {
-        const uploadId = req.params.id;
+        const uploadId = req.params.upload_id;
         const adminId = req.user.id;
         const role = req.user.role;
 
