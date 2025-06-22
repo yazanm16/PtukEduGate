@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
-const sendResetEmail = async (email, token, domain) => {
-    const resetLink = `${domain}/changePassword?token=${token}`;
+const sendResetEmail = async (email, token) => {
+    const resetLink = `http://localhost:5173/reset-password/?token=${token}`;
 
     const transporter = nodemailer.createTransport({
         service: "Gmail",

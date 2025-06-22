@@ -73,20 +73,30 @@ const login=async (emailOrUsername, password,rememberMe =false)=>{
 const forgotPassword=async (email)=>{
     let user;
     let role;
-    user=await db('students').where({student_email:email}).first();
-    if(user){
-        const admin=await db('admins').where('student_id',user.student_id).first();
-        if(admin){
-            role=user.role;
-        }else{
-            role='student';
+    let id;
+    user = await db('students').where({ student_email: email }).first();
+    if (user) {
+        id = user.student_id;
+        role = 'student';
+
+        // إذا هو أيضًا إدمن، حدث الدور
+        const admin = await db('admins').where('student_id', user.student_id).first();
+        if (admin) {
+            role = admin.role; // مثلاً 'admin' أو 'superadmin'
         }
-    }else{
-        throw new Error('User Not Found');
+    } else {
+        // ثانيًا: البحث في جدول الإدمنز
+        const admin = await db('admins').where({ admin_email: email }).first();
+        if (admin) {
+            id = admin.admin_id;
+            role = admin.role;
+        } else {
+            throw new Error('User Not Found');
+        }
     }
 
     const token=jwt.sign({
-        id:user.student_id,
+        id:id,
         role:role
     },process.env.JWT_SECRET,
         {expiresIn: '15m'}
