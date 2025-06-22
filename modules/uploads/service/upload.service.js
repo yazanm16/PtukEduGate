@@ -69,6 +69,11 @@ return true;
 }
 
 const rejectUploaded=async(uploadId,adminId)=>{
+    const upload=await db('upload').where('upload_id',uploadId).first();
+    if(!upload) return null;
+    if (upload.uploaded_state !== 'pending') {
+        throw new Error(`This upload has already been ${upload.uploaded_state}`);
+    }
     const result=await db('upload').where('upload_id',uploadId).update({uploaded_state: 'rejected',admin_id:adminId});
     return result;
 }
