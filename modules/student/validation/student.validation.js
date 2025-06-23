@@ -78,6 +78,10 @@ const new_password=body('new_password','New passwords are required')
         }
     })
 
+const confirmPassword=body('confirmPassword').notEmpty().withMessage('Confirm passwords are required')
+    .bail()
+    .isLength({min:6}).withMessage('Password must be at least 6 characters')
+
 const createStudentValidation=[
     student_name(),
     student_username(),
@@ -95,7 +99,8 @@ const updateStudentValidation=[
 ]
 const changePasswordValidation=[
     student_password,
-    new_password
+    new_password,
+    confirmPassword
 ]
 
 const studentByIdValidation=[

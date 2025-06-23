@@ -74,7 +74,7 @@ const changeAdminPass=async(admin_id,old_password,new_password)=>{
     }
     const isMatch=await bcrypt.compare(old_password,admin.admin_password);
     if(!isMatch){
-        throw new Error('old_password not match');
+        throw new Error('old password not match');
     }
     const newHashedPassword=await bcrypt.hash(new_password,10);
     await db('admins').where({admin_id:admin_id}).update({admin_password:newHashedPassword});

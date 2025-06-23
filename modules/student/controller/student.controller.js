@@ -160,7 +160,13 @@ const updateStudentByPut=async (req, res) => {
 const updatePasswordByPut=async (req, res) => {
     try {
         const studentId=req.user.id;
-        const{student_password,new_password}=req.body;
+        const{student_password,new_password,confirmPassword}=req.body;
+        if (new_password!==confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Passwords don't match",
+            })
+        }
         const student=await db('students').where({student_id:studentId}).first();
         if (!student){
             res.status(404).json({
@@ -172,7 +178,7 @@ const updatePasswordByPut=async (req, res) => {
         if(!isMatch){
             return res.status(404).json({
                 success:false,
-                message:"Password not match"
+                message:"Password not match The Previous Password"
             })
         }
         const hashedPassword=await bcrypt.hash(new_password,10);

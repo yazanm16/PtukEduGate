@@ -92,6 +92,9 @@ const department_id=body('department_id').notEmpty().withMessage('Department is 
         }
         return true;
     });
+const confirmPassword=body('confirmPassword').notEmpty().withMessage('Confirm passwords are required')
+    .bail()
+    .isLength({min:6}).withMessage('Password must be at least 6 characters')
 
 const role=body('role').optional().isIn(['admin','superadmin']).withMessage('Role must be admin or superadmin');
 
@@ -115,7 +118,7 @@ const getAdminsValidation=[
 ]
 
 const changeAdminPasswordValidation=[
-    new_password,admin_password
+    new_password,admin_password,confirmPassword
 ]
 const updateAdminDepartmentValidation=[
     admin_id,

@@ -139,7 +139,13 @@ const getAdminProfileByGet=async(req,res)=>{
 const changeAdminPasswordByPut=async(req,res)=>{
     try{
         const adminId=req.user.id;
-        const{admin_password,new_password}=req.body;
+        const{admin_password,new_password,confirmPassword}=req.body;
+        if (new_password!==confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Passwords don't match",
+            })
+        }
         const result=await changeAdminPass(adminId,admin_password,new_password);
         res.status(200).json({
             success:true,
