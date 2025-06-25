@@ -35,6 +35,8 @@ const updateDC=async (dc_id,data)=>{
 }
 
 const deleteDC=async(dc_id)=>{
+    const courseId=await db('departments_courses').where('dc_id',dc_id).select('course_id').first()
+    await db('students_courses').where('course_id',courseId.course_id).delete()
     return await db('departments_courses').where('dc_id',dc_id).delete();
 }
 module.exports={
