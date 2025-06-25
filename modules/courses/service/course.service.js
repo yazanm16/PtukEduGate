@@ -41,13 +41,12 @@ const deleteCourse=async(course_id)=>{
     if(existVideo) reasons.push("can't delete course because there is a video connected to it") ;
     const existSummary=await db('summaries').where('course_id',course_id).first();
     if(existSummary) reasons.push("can't delete course because there is a summary connected to it") ;
-    const existUpload=await db('upload').where('course_id',course_id).first();
-    if(existUpload) reasons.push("can't delete course because there is a upload connected to it") ;
     const exitDepartment=await db('departments_courses').where('course_id',course_id).first();
     if(exitDepartment) reasons.push("can't delete course because there is an department connected to it") ;
     if (reasons.length > 0) {
         return { status: 'blocked', reasons };
     }
+    await db('upload').where('course_id',course_id).del();
     const deleted= await db('courses').where('course_id',course_id).delete();
     return deleted===0 ?{status:'not_found'} : {status:'deleted'}
 }

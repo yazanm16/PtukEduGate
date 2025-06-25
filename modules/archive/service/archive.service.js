@@ -19,6 +19,14 @@ const restoreArchive=async(archiveId)=>{
 
     const { content_type, original_data, file_path } = archive;
     const data = JSON.parse(original_data);
+    if (data.course_id) {
+        const courseExists = await db('courses')
+            .where('course_id', data.course_id)
+            .first();
+        if (!courseExists) {
+            throw new Error('Cannot restore: the associated course has been deleted, delete it if you need.');
+        }
+    }
 
     const fileName = path.basename(file_path);
     const fromPath = path.join(__dirname, '..', '..','..', 'public', 'uploads', file_path);
