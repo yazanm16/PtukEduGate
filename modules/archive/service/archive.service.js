@@ -13,12 +13,13 @@ const getArchive=async(filters)=>{
     return await query.select('*').orderBy('deleted_at', 'desc');
 }
 
-const restoreArchive=async(archiveId)=>{
+const restoreArchive = async (archiveId) => {
     const archive = await db('archives').where('id', archiveId).first();
     if (!archive) throw new Error('Archived content not found');
 
     const { content_type, original_data, file_path } = archive;
     const data = JSON.parse(original_data);
+
     if (data.course_id) {
         const courseExists = await db('courses')
             .where('course_id', data.course_id)
@@ -29,8 +30,8 @@ const restoreArchive=async(archiveId)=>{
     }
 
     const fileName = path.basename(file_path);
-    const fromPath = path.join(__dirname, '..', '..','..', 'public', 'uploads', file_path);
-    const toPath = path.join(__dirname, '..', '..','..','public', 'uploads', content_type, fileName);
+    const fromPath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', file_path);
+    const toPath = path.join(__dirname, '..', '..', '..', 'public', 'uploads', content_type, fileName);
 
     if (fs.existsSync(fromPath)) {
         fs.mkdirSync(path.dirname(toPath), { recursive: true });
@@ -39,12 +40,24 @@ const restoreArchive=async(archiveId)=>{
 
     const pathField = `${content_type}_path`;
     data[pathField] = `uploads/${content_type}/${fileName}`;
-    await db(content_type + 's').insert(data);
 
+    const tableMap = {
+        book: 'books',
+        exam: 'exams',
+        slide: 'slides',
+        video: 'videos',
+        summary: 'summaries',
+        assignment: 'assignments'
+    };
+
+    const tableName = tableMap[content_type];
+    if (!tableName) throw new Error('Invalid content type');
+
+    await db(tableName).insert(data);
     await db('archives').where('id', archiveId).delete();
 
     return { restored_to: content_type, content_id: data[`${content_type}_id`] };
-}
+};
 
 const deleteArchive=async(archiveId)=>{
     const archive = await db('archives').where('id', archiveId).first();
