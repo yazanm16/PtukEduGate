@@ -8,7 +8,7 @@ const createDepartment=async ({departments_name, college_id})=>{
 
 const DepartmentList=async (filters={})=>{
     let query=db('departments')
-    if(filters.id)query=query.where('department_id',filters.id);
+    if(filters.id)query=query.where('departments_id',filters.id);
     if(filters.departments_name)query=query.where('department_name',filters.departments_name);
     if(filters.college_id)query=query.where('college_id',filters.college_id);
 
